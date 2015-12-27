@@ -19,5 +19,5 @@ handlers.newUserAction = function(args) {
 		CharacterType: startDragon.CharacterType
 	});
 	
-	return res;
+	return result;
 }
