@@ -21,15 +21,3 @@ handlers.newUserAction = function(args) {
 	
 	return result;
 }
-
-handlers.upgradePowerup = function(args) {
-	var PowerupKey = "Powerups";
-	
-	var powerupForUpgrade = 
-	
-	var powerupsData = server.GetTitleData({
-		Keys : [ PowerupKey ]
-	});
-	
-	var 
-}
