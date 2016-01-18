@@ -8,10 +8,10 @@ handlers.newUserAction = function(args) {
 	
 	var startDragon = JSON.parse(titleData.Data[SettingsKey]).StartDragon;
 	
-	var grantResult = server.GrantItemsToUser({
+	/* var grantResult = server.GrantItemsToUser({
 		PlayFabId: currentPlayerId,
 		ItemIds : [ "powerup_magnet", "powerup_shield", "powerup_multiplier" ]
-	});
+	}); */
 	
 	var result = server.GrantCharacterToUser({
 		PlayFabId : currentPlayerId,
@@ -20,4 +20,16 @@ handlers.newUserAction = function(args) {
 	});
 	
 	return result;
+}
+
+handlers.upgradePowerup = function(args) {
+	var PowerupKey = "Powerups";
+	
+	var powerupForUpgrade = 
+	
+	var powerupsData = server.GetTitleData({
+		Keys : [ PowerupKey ]
+	});
+	
+	var 
 }
