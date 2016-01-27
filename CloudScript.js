@@ -24,7 +24,7 @@ handlers.newUserAction = function(args) {
 
 handlers.grantUserItems = function(args) {
 	var itemId = args.itemId;
-	
+	return itemId;
 	var result = server.GrantItemsToUser({
 		PlayFabId : currentPlayerId,
 		ItemIds : [ itemId ]
