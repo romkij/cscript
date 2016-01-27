@@ -21,3 +21,14 @@ handlers.newUserAction = function(args) {
 	
 	return result;
 }
+
+handlers.grantUserItems = function(args) {
+	var itemId = args.itemId;
+	
+	var result = server.GrantItemsToUser({
+		PlayFabId : currentPlayerId,
+		ItemIds : [ itemId ]
+	});
+	
+	return result;
+}
