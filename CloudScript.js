@@ -20,7 +20,7 @@ handlers.newUserAction = function(args) {
 	});
 	
 	return result;
-}
+};
 
 handlers.grantUserItems = function(args) {
 	var itemId = args.itemId;
@@ -30,7 +30,7 @@ handlers.grantUserItems = function(args) {
 	});
 	
 	return result;
-}
+};
 
 function currentTimeInSeconds()
 {
@@ -42,49 +42,49 @@ handlers.requestDaily = function (args) {
     var result;
     var oneDay = 86400;
 
-    var requestDateTime = currentTimeInSeconds();
+    var requestTimestamp = currentTimeInSeconds();
     var completedDays = args.completedDays;
 
 	var playerInternalData = server.GetUserInternalData({
 		PlayFabId: currentPlayerId,
-		Keys: ["dailyCompletedDays", "dailyNextRequestTime", "dailyDeadlineDateTime"]
+        Keys: ["dailyCompletedDays", "dailyNextRequestTimestamp", "dailyDeadlineTimestamp"]
 	});
 
-    var deadlineDateTime = playerInternalData.Data["dailyDeadlineDateTime"];
-	var storedCompletedDays = playerInternalData.Data["dailyCompletedDays"];
-    var nextRequestDateTime = playerInternalData.Data["dailyNextRequestDateTime"];
+    var storedCompletedDays = playerInternalData.Data["dailyCompletedDays"];
+    var deadlineTimestamp = playerInternalData.Data["dailyDeadlineTimestamp"];
+    var nextRequestTimestamp = playerInternalData.Data["dailyNextRequestTimestamp"];
 
-	if (!nextRequestDateTime)
+    if (!nextRequestTimestamp)
 	{
         // First request of daily.
-        deadlineDateTime = requestDateTime + oneDay; // request time in seconds + 1 day in seconds.
-        nextRequestDateTime = deadlineDateTime + oneDay;
+        deadlineTimestamp = requestTimestamp + oneDay; // request time in seconds + 1 day in seconds.
+        nextRequestTimestamp = deadlineTimestamp + oneDay;
         storedCompletedDays = 0
     }
     else
     {
-        deadlineDateTime = parseInt(deadlineDateTime.Value);
+        deadlineTimestamp = parseInt(deadlineTimestamp.Value);
         storedCompletedDays = parseInt(storedCompletedDays.Value);
-        nextRequestDateTime = parseInt(nextRequestDateTime.Value);
+        nextRequestTimestamp = parseInt(nextRequestTimestamp.Value);
 
-        if (deadlineDateTime <= requestDateTime)
+        if (deadlineTimestamp <= requestTimestamp)
         {
             // Time to check.
 
-            if (nextRequestDateTime > requestDateTime)
+            if (nextRequestTimestamp > requestTimestamp)
             {
                 // Good. Client need new level.
 
-                deadlineDateTime = nextRequestDateTime; // request time in seconds + 1 day in seconds.
-                nextRequestDateTime = deadlineDateTime + oneDay;
+                deadlineTimestamp = nextRequestTimestamp; // request time in seconds + 1 day in seconds.
+                nextRequestTimestamp = deadlineTimestamp + oneDay;
                 storedCompletedDays = completedDays;
             }
             else
             {
                 // Bad. Too late to cry. Reset daily.
 
-                deadlineDateTime = requestDateTime + oneDay; // request time in seconds + 1 day in seconds.
-                nextRequestDateTime = deadlineDateTime + oneDay;
+                deadlineTimestamp = requestTimestamp + oneDay; // request time in seconds + 1 day in seconds.
+                nextRequestTimestamp = deadlineTimestamp + oneDay;
                 storedCompletedDays = 0
             }
         }
@@ -98,15 +98,15 @@ handlers.requestDaily = function (args) {
     server.UpdateUserInternalData({
         PlayFabId: currentPlayerId,
         Data: {
-            dailyDeadlineDateTime : String(deadlineDateTime),
+            dailyDeadlineTimestamp: String(deadlineTimestamp),
             dailyCompletedDays : String(storedCompletedDays),
-            dailyNextRequestDateTime : String(nextRequestDateTime)
+            dailyNextRequestTimestamp: String(nextRequestTimestamp)
         }
     });
 
 	return {
-        Deadline : deadlineDateTime,
+        Deadline: deadlineTimestamp,
         CompletedDays : storedCompletedDays,
-        RequestDeadline : nextRequestDateTime
+        RequestDeadline: nextRequestTimestamp
     };
-}
+};
