@@ -91,7 +91,7 @@ handlers.requestDaily = function (args) {
         else
         {
             // Need to wait end of day for new daily..
-            storedCompletedDays = -1;
+            storedCompletedDays = completedDays;
         }
     }
 
