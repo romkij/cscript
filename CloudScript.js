@@ -105,8 +105,8 @@ handlers.requestDaily = function (args) {
     });
 
 	return {
-        deadline : deadlineDateTime,
-        completedDays : storedCompletedDays,
-        requestDeadline : nextRequestDateTime
+        Deadline : deadlineDateTime,
+        CompletedDays : storedCompletedDays,
+        RequestDeadline : nextRequestDateTime
     };
 }
