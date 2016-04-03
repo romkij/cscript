@@ -43,7 +43,7 @@ handlers.requestDaily = function (args) {
     var oneDay = 86400;
 
     var requestTimestamp = currentTimeInSeconds();
-    var completedDays = args.completedDays;
+    var completedDays = args.CompletedDays;
 
 	var playerInternalData = server.GetUserInternalData({
 		PlayFabId: currentPlayerId,
@@ -67,11 +67,11 @@ handlers.requestDaily = function (args) {
         storedCompletedDays = parseInt(storedCompletedDays.Value);
         nextRequestTimestamp = parseInt(nextRequestTimestamp.Value);
 
-        if (deadlineTimestamp <= requestTimestamp)
+        if (requestTimestamp >= deadlineTimestamp)
         {
             // Time to check.
 
-            if (nextRequestTimestamp > requestTimestamp)
+            if (nextRequestTimestamp > requestTimestamp && completedDays > storedCompletedDays)
             {
                 // Good. Client need new level.
 
