@@ -34,7 +34,7 @@ handlers.grantUserItems = function(args) {
 
 function currentTimeInSeconds()
 {
-    var now = new Date().getUTCDate();
+    var now = new Date();
     return now.getTime() / 1000;
 }
 
