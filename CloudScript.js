@@ -47,25 +47,28 @@ handlers.requestDaily = function (args) {
 
 	var playerInternalData = server.GetUserInternalData({
 		PlayFabId: currentPlayerId,
-        Keys: ["dailyCompletedDays", "dailyNextRequestTimestamp", "dailyDeadlineTimestamp"]
+        Keys: ["dailyCompletedDays", "dailyNextRequestTimestamp", "dailyDeadlineTimestamp", "dailyCurrentDay"]
 	});
 
     var storedCompletedDays = playerInternalData.Data["dailyCompletedDays"];
     var deadlineTimestamp = playerInternalData.Data["dailyDeadlineTimestamp"];
     var nextRequestTimestamp = playerInternalData.Data["dailyNextRequestTimestamp"];
+    var currentDay = playerInternalData.Data["dailyCurrentDay"];
 
     if (!nextRequestTimestamp)
 	{
         // First request of daily.
         deadlineTimestamp = requestTimestamp + oneDay; // request time in seconds + 1 day in seconds.
         nextRequestTimestamp = deadlineTimestamp + oneDay;
-        storedCompletedDays = 0
+        storedCompletedDays = 0;
+        currentDay = storedCompletedDays + 1;
     }
     else
     {
         deadlineTimestamp = parseInt(deadlineTimestamp.Value);
         storedCompletedDays = parseInt(storedCompletedDays.Value);
         nextRequestTimestamp = parseInt(nextRequestTimestamp.Value);
+        currentDay = parseInt(currentDay.Value);
 
         if (requestTimestamp >= deadlineTimestamp)
         {
@@ -85,8 +88,10 @@ handlers.requestDaily = function (args) {
 
                 deadlineTimestamp = requestTimestamp + oneDay; // request time in seconds + 1 day in seconds.
                 nextRequestTimestamp = deadlineTimestamp + oneDay;
-                storedCompletedDays = 0
+                storedCompletedDays = 0;
             }
+
+            currentDay = storedCompletedDays + 1;
         }
         else
         {
@@ -100,13 +105,15 @@ handlers.requestDaily = function (args) {
         Data: {
             dailyDeadlineTimestamp: String(deadlineTimestamp),
             dailyCompletedDays : String(storedCompletedDays),
-            dailyNextRequestTimestamp: String(nextRequestTimestamp)
+            dailyNextRequestTimestamp: String(nextRequestTimestamp),
+            dailyCurrentDay: String(currentDay)
         }
     });
 
 	return {
         Deadline: deadlineTimestamp,
         CompletedDays : storedCompletedDays,
-        RequestDeadline: nextRequestTimestamp
+        RequestDeadline: nextRequestTimestamp,
+        CurrentDay: currentDay
     };
 };
