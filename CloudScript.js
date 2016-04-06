@@ -34,7 +34,7 @@ handlers.grantUserItems = function(args) {
 
 handlers.requestDaily = function (args) {
     var result;
-    var oneDay = 160; //86400;
+    var oneDay = 80; //86400;
 
     var requestTimestamp = currentTimeInSeconds();
     var completedDays = args.CompletedDays;
