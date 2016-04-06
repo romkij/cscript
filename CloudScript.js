@@ -71,7 +71,7 @@ handlers.requestDaily = function (args) {
         {
             // Time to check.
 
-            if (nextRequestTimestamp > requestTimestamp)
+            if (nextRequestTimestamp > requestTimestamp && storedCompletedDays >= currentDay)
             {
                 // Good. Client need new level.
                 deadlineTimestamp = nextRequestTimestamp; // request time in seconds + 1 day in seconds.
