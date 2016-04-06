@@ -103,7 +103,7 @@ handlers.requestDaily = function (args) {
             dailyCompletedDays : String(storedCompletedDays),
             dailyNextRequestTimestamp: String(nextRequestTimestamp),
             dailyCurrentDay: String(currentDay),
-            dailyWeekendId: String(uniqueWeekId)
+            dailyWeekId: String(uniqueWeekId)
         }
     });
 
