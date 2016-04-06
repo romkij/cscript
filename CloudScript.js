@@ -32,12 +32,6 @@ handlers.grantUserItems = function(args) {
 	return result;
 };
 
-function currentTimeInSeconds()
-{
-    var now = new Date();
-    return now.getTime() / 1000;
-}
-
 handlers.requestDaily = function (args) {
     var result;
     var oneDay = 160; //86400;
@@ -47,17 +41,19 @@ handlers.requestDaily = function (args) {
 
 	var playerInternalData = server.GetUserInternalData({
 		PlayFabId: currentPlayerId,
-        Keys: ["dailyCompletedDays", "dailyNextRequestTimestamp", "dailyDeadlineTimestamp", "dailyCurrentDay"]
+        Keys: ["dailyCompletedDays", "dailyNextRequestTimestamp", "dailyDeadlineTimestamp", "dailyCurrentDay", "dailyWeekId"]
 	});
 
     var storedCompletedDays = playerInternalData.Data["dailyCompletedDays"];
     var deadlineTimestamp = playerInternalData.Data["dailyDeadlineTimestamp"];
     var nextRequestTimestamp = playerInternalData.Data["dailyNextRequestTimestamp"];
     var currentDay = playerInternalData.Data["dailyCurrentDay"];
+    var uniqueWeekId = playerInternalData.Data["dailyWeekId"];
 
     if (!nextRequestTimestamp)
 	{
         // First request of daily.
+        uniqueWeekId = guid();
         deadlineTimestamp = requestTimestamp + oneDay; // request time in seconds + 1 day in seconds.
         nextRequestTimestamp = deadlineTimestamp + oneDay;
         storedCompletedDays = 0;
@@ -65,6 +61,7 @@ handlers.requestDaily = function (args) {
     }
     else
     {
+        uniqueWeekId = uniqueWeekId.Value;
         deadlineTimestamp = parseInt(deadlineTimestamp.Value);
         storedCompletedDays = parseInt(storedCompletedDays.Value);
         nextRequestTimestamp = parseInt(nextRequestTimestamp.Value);
@@ -77,7 +74,6 @@ handlers.requestDaily = function (args) {
             if (nextRequestTimestamp > requestTimestamp && completedDays > storedCompletedDays)
             {
                 // Good. Client need new level.
-
                 deadlineTimestamp = nextRequestTimestamp; // request time in seconds + 1 day in seconds.
                 nextRequestTimestamp = deadlineTimestamp + oneDay;
                 storedCompletedDays = completedDays;
@@ -85,7 +81,7 @@ handlers.requestDaily = function (args) {
             else
             {
                 // Bad. Too late to cry. Reset daily.
-
+                uniqueWeekId = guid();
                 deadlineTimestamp = requestTimestamp + oneDay; // request time in seconds + 1 day in seconds.
                 nextRequestTimestamp = deadlineTimestamp + oneDay;
                 storedCompletedDays = 0;
@@ -106,7 +102,8 @@ handlers.requestDaily = function (args) {
             dailyDeadlineTimestamp: String(deadlineTimestamp),
             dailyCompletedDays : String(storedCompletedDays),
             dailyNextRequestTimestamp: String(nextRequestTimestamp),
-            dailyCurrentDay: String(currentDay)
+            dailyCurrentDay: String(currentDay),
+            dailyWeekendId: String(uniqueWeekId)
         }
     });
 
@@ -114,6 +111,25 @@ handlers.requestDaily = function (args) {
         Deadline: deadlineTimestamp,
         CompletedDays : storedCompletedDays,
         RequestDeadline: nextRequestTimestamp,
-        CurrentDay: currentDay
+        CurrentDay: currentDay,
+        UniqueWeekId: uniqueWeekId
     };
 };
+
+
+// Additional functionality.
+function currentTimeInSeconds() {
+    var now = new Date();
+    return now.getTime() / 1000;
+}
+
+function guid() {
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    }
+
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+        s4() + '-' + s4() + s4() + s4();
+}
