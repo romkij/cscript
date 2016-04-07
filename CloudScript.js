@@ -93,7 +93,7 @@ handlers.newRequestDaily = function (args) {
 
     var resultData = JSON.stringify(internalData);
 
-    debug(resultData);
+    log.debug(resultData);
 
     server.UpdateUserInternalData({
         PlayFabId: currentPlayerId,
