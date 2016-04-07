@@ -35,6 +35,7 @@ handlers.newRequestDaily = function (args) {
     var userClientData = {
         WeekId: args.WeekId,
         IsNeedReward: args.IsNeedReward,
+        CurrentDay: args.CurrentDay,
         CompletedDays: args.CompletedDays,
         CurrentProgress: args.CurrentProgress,
         IsCheater: args.IsCheater
@@ -44,6 +45,17 @@ handlers.newRequestDaily = function (args) {
         PlayFabId: currentPlayerId,
         Keys: [DailyKey]
     });
+
+    if (userClientData.IsCheater) {
+        server.LogEvent({
+            PlayFabId: currentPlayerId,
+            EventName: "DailyCheater",
+            Body: {
+                "Day": userClientData.CurrentDay,
+                "Progress": userClientData.CurrentProgress
+            }
+        });
+    }
 
     if (!userServerData.Data.hasOwnProperty(DailyKey) || userClientData.IsCheater) {
         // First Request Daily.
@@ -98,7 +110,7 @@ handlers.newRequestDaily = function (args) {
     if (userClientData.IsNeedReward) {
         var reward = userClientData.CompletedDays >= settings.MaxDays ? settings.WeekReward : settings.DailyReward;
 
-        var grantResult = server.GrantItemsToUser({
+        server.GrantItemsToUser({
             PlayFabId: currentPlayerId,
             ItemIds: [reward]
         });
@@ -115,7 +127,7 @@ handlers.newRequestDaily = function (args) {
         PlayFabId: currentPlayerId,
         Data: {
             "Daily": JSON.stringify(userServerData),
-            "IsCheater": JSON.stringify(userClientData.IsCheater)
+            "IsCheater": JSON.stringify(userClientData.IsCheater),
         }
     });
 
