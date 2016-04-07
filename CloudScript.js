@@ -92,7 +92,7 @@ handlers.processDaily = function (args) {
         }
         else {
             userServerData.CurrentProgress = userClientData.CurrentProgress;
-            userServerData.CompletedDays = userServerData.CurrentDay > settings.MaxDays ? 0 : userClientData.CompletedDays;
+            userServerData.CompletedDays = userClientData.CompletedDays;
         }
     }
 
@@ -107,7 +107,7 @@ handlers.processDaily = function (args) {
     };
 
     if (userClientData.IsNeedReward) {
-        var reward = userClientData.CompletedDays >= settings.MaxDays ? settings.WeekReward : settings.DailyReward;
+        var reward = userClientData.CurrentDay >= settings.MaxDays ? settings.WeekReward : settings.DailyReward;
 
         server.GrantItemsToUser({
             PlayFabId: currentPlayerId,
@@ -118,6 +118,8 @@ handlers.processDaily = function (args) {
             PlayFabId: currentPlayerId,
             ContainerItemId: reward
         });
+
+        userServerData.CompletedDays = userServerData.CurrentDay >= settings.MaxDays ? 0 : userServerData.CompletedDays;
 
         result.RewardedItems = unlockResult.GrantedItems;
     }
