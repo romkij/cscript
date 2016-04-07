@@ -1,12 +1,13 @@
+var SETTINGS_KEY = "Settings";
+
 handlers.newUserAction = function(args) {
-	var SettingsKey = "Settings";
 	var CharactersKey = "Characters";	
 	
 	var titleData = server.GetTitleData({
-		Keys : [ SettingsKey ]
+        Keys: [SETTINGS_KEY]
 	});
-	
-	var startDragon = JSON.parse(titleData.Data[SettingsKey]).StartDragon;
+
+    var startDragon = JSON.parse(titleData.Data[SETTINGS_KEY]).StartDragon;
 	
 	/* var grantResult = server.GrantItemsToUser({
 		PlayFabId: currentPlayerId,
@@ -36,7 +37,7 @@ handlers.newRequestDaily = function (args) {
     var DailyKey = "Daily";
     var timeout = 60; // 86400
 
-    var settings = getTitleData(DailyKey);
+    var settings = getTitleData(DailyKey).Daily;
 
     var requestTimestamp = currentTimeInSeconds();
 
@@ -234,9 +235,9 @@ function guid() {
 
 function getTitleData(key) {
     var titleData = server.GetTitleData({
-        Keys: [key]
+        Keys: [SETTINGS_KEY]
     });
 
-    if (titleData.Data.hasOwnProperty(key))
-        return JSON.parse(titleData.Data[key].Value);
+    if (titleData.Data.hasOwnProperty(SETTINGS_KEY))
+        return JSON.parse(titleData.Data[SETTINGS_KEY])
 }
