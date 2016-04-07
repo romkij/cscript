@@ -47,11 +47,7 @@ handlers.newRequestDaily = function (args) {
 
     // NextRequestTimestamp , DeadlineTimestamp , currentProgress , CompletedDays, CurrentDay, WeekId
 
-    internalData = JSON.parse(internalData.Data[DailyKey]);
-
-    return internalData;
-
-    if (!internalData) {
+    if (!internalData.Data[DailyKey]) {
         // First Request Daily.
         internalData = {
             WeekId: guid(),
@@ -62,6 +58,9 @@ handlers.newRequestDaily = function (args) {
         };
     }
     else {
+
+        internalData = JSON.parse(internalData.Data[DailyKey]);
+
         if (requestTimestamp >= internalData.DeadlineTimestamp) {
             // Time to check.
 
