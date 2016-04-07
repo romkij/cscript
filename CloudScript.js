@@ -91,6 +91,8 @@ handlers.newRequestDaily = function (args) {
         }
     }
 
+    return;
+
     var resultData = JSON.stringify(internalData);
 
     server.UpdateUserInternalData({
