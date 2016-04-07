@@ -82,8 +82,7 @@ handlers.newRequestDaily = function (args) {
                 internalData.NextRequestTimestamp = internalData.DeadlineTimestamp + timeout;
                 internalData.CompletedDays = 0;
             }
-
-            internalData = internalData.CompletedDays + 1;
+            internalData = internalData.CurrentDay + 1;
         }
         else {
             // Need to wait end of day for new daily.. Save current progress.
