@@ -72,6 +72,7 @@ handlers.newRequestDaily = function (args) {
                 userServerData.DeadlineTimestamp = requestTimestamp + timeout; // request time in seconds + 1 day in seconds.
                 userServerData.NextRequestTimestamp = userServerData.DeadlineTimestamp + timeout;
                 userServerData.CompletedDays = 0;
+                userServerData.CurrentProgress = 0;
             }
 
             userServerData.CurrentDay = userServerData.CompletedDays + 1;
