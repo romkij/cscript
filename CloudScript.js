@@ -46,16 +46,16 @@ handlers.newRequestDaily = function (args) {
         Keys: [DailyKey]
     });
 
-    if (userClientData.IsCheater) {
-        server.LogEvent({
-            PlayFabId: currentPlayerId,
-            EventName: "DailyCheater",
-            Body: {
-                "Day": userClientData.CurrentDay,
-                "Progress": userClientData.CurrentProgress
-            }
-        });
-    }
+    // if (userClientData.IsCheater) {
+    //     server.LogEvent({
+    //         PlayFabId: currentPlayerId,
+    //         EventName: "DailyCheater",
+    //         Body: {
+    //             "Day": userClientData.CurrentDay,
+    //             "Progress": userClientData.CurrentProgress
+    //         }
+    //     });
+    // }
 
     if (!userServerData.Data.hasOwnProperty(DailyKey) || userClientData.IsCheater) {
         // First Request Daily.
@@ -127,7 +127,7 @@ handlers.newRequestDaily = function (args) {
         PlayFabId: currentPlayerId,
         Data: {
             "Daily": JSON.stringify(userServerData),
-            "IsCheater": JSON.stringify(userClientData.IsCheater),
+            "IsCheater": JSON.stringify(userClientData.IsCheater)
         }
     });
 
