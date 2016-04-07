@@ -92,7 +92,7 @@ handlers.processDaily = function (args) {
         }
         else {
             userServerData.CurrentProgress = userClientData.CurrentProgress;
-            userServerData.CompletedDays = userServerData.CompletedDays >= settings.MaxDays ? 0 : userClientData.CompletedDays;
+            userServerData.CompletedDays = userServerData.CurrentDay > settings.MaxDays ? 0 : userClientData.CompletedDays;
         }
     }
 
