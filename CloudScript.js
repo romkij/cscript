@@ -59,6 +59,7 @@ handlers.newRequestDaily = function (args) {
     }
     else {
 
+        return JSON.stringify(internalData);
         internalData = JSON.parse(internalData.Data[DailyKey].Value);
 
         return JSON.stringify(internalData);
