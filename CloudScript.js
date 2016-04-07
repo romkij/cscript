@@ -38,7 +38,7 @@ handlers.newRequestDaily = function (args) {
 
     var userCompletedDays = args.CompletedDays;
     var requestTimestamp = currentTimeInSeconds();
-    var userCurrentProgress = args.CurrentProgress;
+    //var userCurrentProgress = args.CurrentProgress;
 
     var internalData = server.GetUserInternalData({
         PlayFabId: currentPlayerId,
