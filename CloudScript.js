@@ -24,7 +24,7 @@ handlers.grantUserItems = function(args) {
 	return result;
 };
 
-handlers.newRequestDaily = function (args) {
+handlers.processDaily = function (args) {
     var DailyKey = "Daily";
     var timeout = 180; // 86400
 
