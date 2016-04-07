@@ -98,7 +98,7 @@ handlers.newRequestDaily = function (args) {
         Data: {"Daily": resultData}
     });
 
-    return resultData;
+    return internalData;
 };
 
 handlers.requestDaily = function (args) {
