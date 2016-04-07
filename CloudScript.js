@@ -73,13 +73,13 @@ handlers.newRequestDaily = function (args) {
                 userServerData.NextRequestTimestamp = userServerData.DeadlineTimestamp + timeout;
                 userServerData.CompletedDays = 0;
             }
+
+            userServerData.CurrentDay = userServerData.CompletedDays + 1;
         }
         else {
             userServerData.CurrentProgress = userClientData.CurrentProgress;
             userServerData.CompletedDays = userServerData.CompletedDays >= settings.MaxDays ? 0 : userClientData.CompletedDays;
         }
-
-        userServerData.CurrentDay = userServerData.CompletedDays + 1;
     }
 
     var result = {
