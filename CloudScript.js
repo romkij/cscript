@@ -61,6 +61,8 @@ handlers.newRequestDaily = function (args) {
 
         internalData = JSON.parse(internalData.Data[DailyKey]);
 
+        return;
+
         if (requestTimestamp >= internalData.DeadlineTimestamp) {
             // Time to check.
 
@@ -90,8 +92,6 @@ handlers.newRequestDaily = function (args) {
             internalData.CompletedDays = userCompletedDays;
         }
     }
-
-    return;
 
     var resultData = JSON.stringify(internalData);
 
