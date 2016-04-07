@@ -36,7 +36,8 @@ handlers.newRequestDaily = function (args) {
         WeekId: args.WeekId,
         IsNeedReward: args.IsNeedReward,
         CompletedDays: args.CompletedDays,
-        CurrentProgress: args.CurrentProgress
+        CurrentProgress: args.CurrentProgress,
+        IsCheater: args.IsCheater
     };
 
     var userServerData = server.GetUserInternalData({
@@ -44,7 +45,7 @@ handlers.newRequestDaily = function (args) {
         Keys: [DailyKey]
     });
 
-    if (!userServerData.Data.hasOwnProperty(DailyKey)) {
+    if (!userServerData.Data.hasOwnProperty(DailyKey) || userClientData.IsCheater) {
         // First Request Daily.
         userServerData = {
             WeekId: guid(),
@@ -112,7 +113,10 @@ handlers.newRequestDaily = function (args) {
 
     server.UpdateUserInternalData({
         PlayFabId: currentPlayerId,
-        Data: {"Daily": JSON.stringify(userServerData)}
+        Data: {
+            "Daily": JSON.stringify(userServerData),
+            "IsCheater": JSON.stringify(userClientData.IsCheater)
+        }
     });
 
     return result;
