@@ -45,47 +45,47 @@ handlers.newRequestDaily = function (args) {
         Keys: [DailyKey]
     });
 
-    // nextRequestTimestamp , deadlineTimestamp , currentProgress , completedDays, currentDay, weekId
+    // NextRequestTimestamp , DeadlineTimestamp , currentProgress , CompletedDays, CurrentDay, WeekId
 
     internalData = JSON.parse(internalData.Data[DailyKey]);
 
-    if (!internalData.weekId) {
+    if (!internalData.WeekId) {
         // First Request Daily.
 
-        internalData.weekId = guid();
-        internalData.deadlineTimestamp = requestTimestamp + timeout;
-        internalData.nextRequestTimestamp = internalData.deadlineTimestamp + timeout;
-        internalData.completedDays = 0;
-        internalData.currentDay = internalData.completedDays + 1;
+        internalData.WeekId = guid();
+        internalData.DeadlineTimestamp = requestTimestamp + timeout;
+        internalData.NextRequestTimestamp = internalData.DeadlineTimestamp + timeout;
+        internalData.CompletedDays = 0;
+        internalData.CurrentDay = internalData.CompletedDays + 1;
     }
     else {
-        if (requestTimestamp >= internalData.deadlineTimestamp) {
+        if (requestTimestamp >= internalData.DeadlineTimestamp) {
             // Time to check.
 
-            if (userCompletedDays > internalData.completedDays) {
-                internalData.completedDays = userCompletedDays;
+            if (userCompletedDays > internalData.CompletedDays) {
+                internalData.CompletedDays = userCompletedDays;
             }
 
-            if (internalData.nextRequestTimestamp > requestTimestamp && internalData.completedDays >= internalData.currentDay) {
+            if (internalData.NextRequestTimestamp > requestTimestamp && internalData.CompletedDays >= internalData.CurrentDay) {
                 // Good. Client need new level.
 
-                internalData.deadlineTimestamp = internalData.nextRequestTimestamp; // request time in seconds + 1 day in seconds.
-                internalData.nextRequestTimestamp += timeout;
+                internalData.DeadlineTimestamp = internalData.NextRequestTimestamp; // request time in seconds + 1 day in seconds.
+                internalData.NextRequestTimestamp += timeout;
             }
             else {
                 // Bad. Too late to cry. Reset daily.
 
-                internalData.weekId = guid();
-                internalData.deadlineTimestamp = requestTimestamp + timeout; // request time in seconds + 1 day in seconds.
-                internalData.nextRequestTimestamp = internalData.deadlineTimestamp + timeout;
-                internalData.completedDays = 0;
+                internalData.WeekId = guid();
+                internalData.DeadlineTimestamp = requestTimestamp + timeout; // request time in seconds + 1 day in seconds.
+                internalData.NextRequestTimestamp = internalData.DeadlineTimestamp + timeout;
+                internalData.CompletedDays = 0;
             }
 
-            internalData = internalData.completedDays + 1;
+            internalData = internalData.CompletedDays + 1;
         }
         else {
             // Need to wait end of day for new daily.. Save current progress.
-            internalData.completedDays = userCompletedDays;
+            internalData.CompletedDays = userCompletedDays;
         }
     }
 
@@ -118,71 +118,71 @@ handlers.requestDaily = function (args) {
     var uniqueWeekId = playerInternalData.Data["dailyWeekId"];
 
 
-    if (!nextRequestTimestamp)
+    if (!NextRequestTimestamp)
 	{
         // First request of daily.
         uniqueWeekId = guid();
-        deadlineTimestamp = requestTimestamp + oneDay; // request time in seconds + 1 day in seconds.
-        nextRequestTimestamp = deadlineTimestamp + oneDay;
+        DeadlineTimestamp = requestTimestamp + oneDay; // request time in seconds + 1 day in seconds.
+        NextRequestTimestamp = DeadlineTimestamp + oneDay;
         storedCompletedDays = 0;
-        currentDay = storedCompletedDays + 1;
+        CurrentDay = storedCompletedDays + 1;
     }
     else
     {
         uniqueWeekId = uniqueWeekId.Value;
-        deadlineTimestamp = parseInt(deadlineTimestamp.Value);
+        DeadlineTimestamp = parseInt(DeadlineTimestamp.Value);
         storedCompletedDays = parseInt(storedCompletedDays.Value);
-        nextRequestTimestamp = parseInt(nextRequestTimestamp.Value);
-        currentDay = parseInt(currentDay.Value);
+        NextRequestTimestamp = parseInt(NextRequestTimestamp.Value);
+        CurrentDay = parseInt(CurrentDay.Value);
 
-        if (requestTimestamp >= deadlineTimestamp)
+        if (requestTimestamp >= DeadlineTimestamp)
         {
             // Time to check.
 
-            if (completedDays > storedCompletedDays) {
-                storedCompletedDays = completedDays;
+            if (CompletedDays > storedCompletedDays) {
+                storedCompletedDays = CompletedDays;
             }
 
-            if (nextRequestTimestamp > requestTimestamp && storedCompletedDays >= currentDay)
+            if (NextRequestTimestamp > requestTimestamp && storedCompletedDays >= CurrentDay)
             {
                 // Good. Client need new level.
-                deadlineTimestamp = nextRequestTimestamp; // request time in seconds + 1 day in seconds.
-                nextRequestTimestamp = deadlineTimestamp + oneDay;
+                DeadlineTimestamp = NextRequestTimestamp; // request time in seconds + 1 day in seconds.
+                NextRequestTimestamp = DeadlineTimestamp + oneDay;
             }
             else
             {
                 // Bad. Too late to cry. Reset daily.
                 uniqueWeekId = guid();
-                deadlineTimestamp = requestTimestamp + oneDay; // request time in seconds + 1 day in seconds.
-                nextRequestTimestamp = deadlineTimestamp + oneDay;
+                DeadlineTimestamp = requestTimestamp + oneDay; // request time in seconds + 1 day in seconds.
+                NextRequestTimestamp = DeadlineTimestamp + oneDay;
                 storedCompletedDays = 0;
             }
 
-            currentDay = storedCompletedDays + 1;
+            CurrentDay = storedCompletedDays + 1;
         }
         else
         {
             // Need to wait end of day for new daily..
-            storedCompletedDays = completedDays;
+            storedCompletedDays = CompletedDays;
         }
     }
 
     server.UpdateUserInternalData({
         PlayFabId: currentPlayerId,
         Data: {
-            dailyDeadlineTimestamp: String(deadlineTimestamp),
+            dailyDeadlineTimestamp: String(DeadlineTimestamp),
             dailyCompletedDays : String(storedCompletedDays),
-            dailyNextRequestTimestamp: String(nextRequestTimestamp),
-            dailyCurrentDay: String(currentDay),
+            dailyNextRequestTimestamp: String(NextRequestTimestamp),
+            dailyCurrentDay: String(CurrentDay),
             dailyWeekId: String(uniqueWeekId)
         }
     });
 
 	return {
-        Deadline: deadlineTimestamp,
+        Deadline: DeadlineTimestamp,
         CompletedDays : storedCompletedDays,
-        RequestDeadline: nextRequestTimestamp,
-        CurrentDay: currentDay,
+        RequestDeadline: NextRequestTimestamp,
+        CurrentDay: CurrentDay,
         UniqueWeekId: uniqueWeekId
     };
 };
