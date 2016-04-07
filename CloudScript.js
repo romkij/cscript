@@ -36,69 +36,97 @@ handlers.newRequestDaily = function (args) {
     var DailyKey = "Daily";
     var timeout = 60; // 86400
 
-    var userCompletedDays = args.CompletedDays;
-    var requestTimestamp = currentTimeInSeconds();
-    //var userCurrentProgress = args.CurrentProgress;
+    var settings = getTitleData(DailyKey);
 
-    var internalData = server.GetUserInternalData({
+    var requestTimestamp = currentTimeInSeconds();
+
+    var userClientData = {
+        WeekId: args.WeekId,
+        IsNeedReward: args.IsNeedReward,
+        CompletedDays: args.CompletedDays,
+        CurrentProgress: args.CurrentProgress
+    };
+
+    var userServerData = server.GetUserInternalData({
         PlayFabId: currentPlayerId,
         Keys: [DailyKey]
     });
 
+    var rewardedItems;
+
     // NextRequestTimestamp , DeadlineTimestamp , currentProgress , CompletedDays, CurrentDay, WeekId
 
-    if (!internalData.Data[DailyKey]) {
+    if (!userServerData.Data.hasOwnProperty(DailyKey)) {
         // First Request Daily.
-        internalData = {
+        userServerData = {
             WeekId: guid(),
-            DeadlineTimestamp: requestTimestamp + timeout,
-            NextRequestTimestamp: requestTimestamp + (timeout * 2),
+            CurrentDay: 1,
             CompletedDays: 0,
-            CurrentDay: 1
+            CurrentProgress: 0,
+            DeadlineTimestamp: requestTimestamp + timeout,
+            NextRequestTimestamp: requestTimestamp + (timeout * 2)
         };
     }
     else {
 
-        internalData = JSON.parse(internalData.Data[DailyKey].Value);
+        userServerData = JSON.parse(userServerData.Data[DailyKey].Value);
 
-        if (requestTimestamp >= internalData.DeadlineTimestamp) {
+        if (requestTimestamp >= userServerData.DeadlineTimestamp) {
             // Time to check.
-
-            if (userCompletedDays > internalData.CompletedDays) {
-                internalData.CompletedDays = userCompletedDays;
-            }
-
-            if (internalData.NextRequestTimestamp > requestTimestamp && internalData.CompletedDays >= internalData.CurrentDay) {
+            if (userServerData.NextRequestTimestamp > requestTimestamp && userServerData.CompletedDays >= userServerData.CurrentDay) {
                 // Good. Client need new level.
-
-                internalData.DeadlineTimestamp = internalData.NextRequestTimestamp; // request time in seconds + 1 day in seconds.
-                internalData.NextRequestTimestamp += timeout;
+                userServerData.DeadlineTimestamp = userServerData.NextRequestTimestamp; // request time in seconds + 1 day in seconds.
+                userServerData.NextRequestTimestamp += timeout;
             }
             else {
                 // Bad. Too late to cry. Reset daily.
-
-                internalData.WeekId = guid();
-                internalData.DeadlineTimestamp = requestTimestamp + timeout; // request time in seconds + 1 day in seconds.
-                internalData.NextRequestTimestamp = internalData.DeadlineTimestamp + timeout;
-                internalData.CompletedDays = 0;
+                userServerData.WeekId = guid();
+                userServerData.DeadlineTimestamp = requestTimestamp + timeout; // request time in seconds + 1 day in seconds.
+                userServerData.NextRequestTimestamp = userServerData.DeadlineTimestamp + timeout;
+                userServerData.CompletedDays = 0;
             }
-
-            internalData.CurrentDay = internalData.CompletedDays + 1;
         }
         else {
-            // Need to wait end of day for new daily.. Save current progress.
-            internalData.CompletedDays = userCompletedDays;
+
+            userServerData.CompletedDays = userClientData.CompletedDays;
+            userServerData.CurrentProgress = userClientData.CurrentProgress;
+            userServerData.CompletedDays = userServerData.CompletedDays >= settings.MaxDays ? 0 : userServerData.CompletedDays;
         }
+
+        userServerData.CurrentDay = userServerData.CompletedDays + 1;
     }
 
-    var resultData = JSON.stringify(internalData);
+    var result = {
+        WeekId: userServerData.WeekId,
+        CurrentDay: userServerData.CurrentDay,
+        CompletedDays: userServerData.CompletedDays,
+        CurrentProgress: userServerData.CurrentProgress,
+        DeadlineTimestamp: userServerData.DeadlineTimestamp,
+        IsNeedReward: false,
+        RewardedItems: []
+    };
+
+    if (userClientData.IsNeedReward) {
+        var reward = userClientData.CompletedDays >= settings.MaxDays ? settings.WeekReward : settings.DailyReward;
+        var grantResult = server.GrantItemsToUser({
+            PlayFabId: currentPlayerId,
+            ItemIds: [reward]
+        });
+
+        var unlockResult = server.UnlockContainerItem({
+            PlayFabId: currentPlayerId,
+            ContainerItemId: reward
+        });
+
+        result.RewardedItems = unlockResult.GrantedItems;
+    }
 
     server.UpdateUserInternalData({
         PlayFabId: currentPlayerId,
-        Data: {"Daily": resultData}
+        Data: {"Daily": JSON.stringify(userServerData)}
     });
 
-    return internalData;
+    return result;
 };
 
 handlers.requestDaily = function (args) {
@@ -189,7 +217,6 @@ handlers.requestDaily = function (args) {
     };
 };
 
-
 // Additional functionality.
 function currentTimeInSeconds() {
     var now = new Date();
@@ -203,4 +230,13 @@ function guid() {
 
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
         s4() + '-' + s4() + s4() + s4();
+}
+
+function getTitleData(key) {
+    var titleData = server.GetTitleData({
+        Keys: [key]
+    });
+
+    if (titleData.Data.hasOwnProperty(key))
+        return JSON.parse(titleData.Data[key].Value);
 }
