@@ -88,10 +88,8 @@ handlers.newRequestDaily = function (args) {
             }
         }
         else {
-
-            userServerData.CompletedDays = userClientData.CompletedDays;
             userServerData.CurrentProgress = userClientData.CurrentProgress;
-            userServerData.CompletedDays = userServerData.CompletedDays >= settings.MaxDays ? 0 : userServerData.CompletedDays;
+            userServerData.CompletedDays = userServerData.CompletedDays >= settings.MaxDays ? 0 : userClientData.CompletedDays;
         }
 
         userServerData.CurrentDay = userServerData.CompletedDays + 1;
