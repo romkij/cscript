@@ -26,7 +26,6 @@ handlers.grantUserItems = function(args) {
 
 handlers.processDaily = function (args) {
     var DailyKey = "Daily";
-    var timeout = 180; // 86400
 
     var settings = getTitleData(DailyKey);
 
@@ -64,8 +63,8 @@ handlers.processDaily = function (args) {
             CurrentDay: 1,
             CompletedDays: 0,
             CurrentProgress: 0,
-            DeadlineTimestamp: requestTimestamp + timeout,
-            NextRequestTimestamp: requestTimestamp + (timeout * 2)
+            DeadlineTimestamp: requestTimestamp + settings.Timeout,
+            NextRequestTimestamp: requestTimestamp + (settings.Timeout * 2)
         };
     }
     else {
@@ -77,14 +76,14 @@ handlers.processDaily = function (args) {
             if (userServerData.NextRequestTimestamp > requestTimestamp && userServerData.CompletedDays >= userServerData.CurrentDay) {
                 // Good. Client need new level.
                 userServerData.DeadlineTimestamp = userServerData.NextRequestTimestamp; // request time in seconds + 1 day in seconds.
-                userServerData.NextRequestTimestamp += timeout;
+                userServerData.NextRequestTimestamp += settings.Timeout;
                 userServerData.CurrentProgress = 0;
             }
             else {
                 // Bad. Too late to cry. Reset daily.
                 userServerData.WeekId = guid();
-                userServerData.DeadlineTimestamp = requestTimestamp + timeout; // request time in seconds + 1 day in seconds.
-                userServerData.NextRequestTimestamp = userServerData.DeadlineTimestamp + timeout;
+                userServerData.DeadlineTimestamp = requestTimestamp + settings.Timeout; // request time in seconds + 1 day in seconds.
+                userServerData.NextRequestTimestamp = userServerData.DeadlineTimestamp + settings.Timeout;
                 userServerData.CompletedDays = 0;
                 userServerData.CurrentProgress = 0;
             }
