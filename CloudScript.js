@@ -65,6 +65,7 @@ handlers.newRequestDaily = function (args) {
                 // Good. Client need new level.
                 userServerData.DeadlineTimestamp = userServerData.NextRequestTimestamp; // request time in seconds + 1 day in seconds.
                 userServerData.NextRequestTimestamp += timeout;
+                userServerData.CurrentProgress = 0;
             }
             else {
                 // Bad. Too late to cry. Reset daily.
