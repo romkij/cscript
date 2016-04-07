@@ -61,6 +61,9 @@ handlers.newRequestDaily = function (args) {
 
         internalData = JSON.parse(internalData.Data[DailyKey].Value);
 
+        return JSON.stringify(internalData);
+
+
         if (requestTimestamp >= internalData.DeadlineTimestamp) {
             // Time to check.
 
