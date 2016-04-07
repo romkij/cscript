@@ -47,9 +47,9 @@ handlers.newRequestDaily = function (args) {
 
     // NextRequestTimestamp , DeadlineTimestamp , currentProgress , CompletedDays, CurrentDay, WeekId
 
-    return "fA";
-
     internalData = JSON.parse(internalData.Data[DailyKey]);
+
+    return internalData;
 
     if (!internalData) {
         // First Request Daily.
