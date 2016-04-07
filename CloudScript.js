@@ -44,10 +44,6 @@ handlers.newRequestDaily = function (args) {
         Keys: [DailyKey]
     });
 
-    var rewardedItems;
-
-    // NextRequestTimestamp , DeadlineTimestamp , currentProgress , CompletedDays, CurrentDay, WeekId
-
     if (!userServerData.Data.hasOwnProperty(DailyKey)) {
         // First Request Daily.
         userServerData = {
@@ -98,6 +94,7 @@ handlers.newRequestDaily = function (args) {
 
     if (userClientData.IsNeedReward) {
         var reward = userClientData.CompletedDays >= settings.MaxDays ? settings.WeekReward : settings.DailyReward;
+
         var grantResult = server.GrantItemsToUser({
             PlayFabId: currentPlayerId,
             ItemIds: [reward]
