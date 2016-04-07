@@ -49,14 +49,15 @@ handlers.newRequestDaily = function (args) {
 
     internalData = JSON.parse(internalData.Data[DailyKey]);
 
-    if (!internalData.WeekId) {
+    if (!internalData) {
         // First Request Daily.
-
-        internalData.WeekId = guid();
-        internalData.DeadlineTimestamp = requestTimestamp + timeout;
-        internalData.NextRequestTimestamp = internalData.DeadlineTimestamp + timeout;
-        internalData.CompletedDays = 0;
-        internalData.CurrentDay = internalData.CompletedDays + 1;
+        internalData = {
+            WeekId: guid(),
+            DeadlineTimestamp: requestTimestamp + timeout,
+            NextRequestTimestamp: requestTimestamp + (timeout * 2),
+            CompletedDays: 0,
+            CurrentDay: 1
+        };
     }
     else {
         if (requestTimestamp >= internalData.DeadlineTimestamp) {
