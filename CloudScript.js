@@ -73,6 +73,8 @@ handlers.processDaily = function (args) {
         userServerData = JSON.parse(userServerData.Data[DailyKey].Value);
 
         if (requestTimestamp >= userServerData.DeadlineTimestamp) {
+
+            log.debug("Time to check!!!! ");
             // Time to check.
             if (userServerData.NextRequestTimestamp >= requestTimestamp && userClientData.CompletedDays >= userServerData.CurrentDay) {
                 // Good. Client need new level.
@@ -94,6 +96,8 @@ handlers.processDaily = function (args) {
         else {
             userServerData.CurrentProgress = userClientData.CurrentProgress;
             userServerData.CompletedDays = userClientData.CompletedDays;
+
+            log.debug("Not time check!!!! ");
         }
 
     }
