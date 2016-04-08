@@ -72,9 +72,6 @@ handlers.processDaily = function (args) {
         userServerData = JSON.parse(userServerData.Data[DailyKey].Value);
 
 
-        userServerData.CurrentProgress = userClientData.CurrentProgress;
-        userServerData.CompletedDays = userClientData.CompletedDays;
-
         if (requestTimestamp >= userServerData.DeadlineTimestamp) {
             // Time to check.
             if (userServerData.NextRequestTimestamp >= requestTimestamp && userServerData.CompletedDays >= userServerData.CurrentDay) {
@@ -93,6 +90,10 @@ handlers.processDaily = function (args) {
             }
 
             userServerData.CurrentDay = userServerData.CompletedDays + 1;
+        }
+        else {
+            userServerData.CurrentProgress = userClientData.CurrentProgress;
+            userServerData.CompletedDays = userClientData.CompletedDays;
         }
     }
 
