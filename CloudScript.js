@@ -26,7 +26,6 @@ handlers.grantUserItems = function(args) {
 
 handlers.processDaily = function (args) {
     var DailyKey = "Daily";
-    var tolerance = 3;
 
     var settings = getTitleData(DailyKey);
 
@@ -73,7 +72,7 @@ handlers.processDaily = function (args) {
         userServerData = JSON.parse(userServerData.Data[DailyKey].Value);
 
 
-        if (requestTimestamp + tolerance >= userServerData.DeadlineTimestamp) {
+        if (requestTimestamp >= userServerData.DeadlineTimestamp) {
             // Time to check.
             if (userServerData.NextRequestTimestamp >= requestTimestamp && userServerData.CompletedDays >= userServerData.CurrentDay) {
                 // Good. Client need new level.
