@@ -29,7 +29,7 @@ handlers.processDaily = function (args) {
 
     var settings = getTitleData(DailyKey);
 
-    var requestTimestamp = currentTimeInMilliSeconds();
+    var requestTimestamp = currentTimeInSeconds();
 
     var userClientData = {
         WeekId: args.WeekId,
@@ -134,11 +134,6 @@ handlers.processDaily = function (args) {
 
     return result;
 };
-
-function currentTimeInMilliSeconds() {
-    var now = new Date();
-    return now.getTime();
-}
 
 // Additional functionality.
 function currentTimeInSeconds() {
