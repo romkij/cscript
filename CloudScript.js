@@ -73,7 +73,7 @@ handlers.processDaily = function (args) {
 
         if (requestTimestamp >= userServerData.DeadlineTimestamp) {
             // Time to check.
-            if (userServerData.NextRequestTimestamp > requestTimestamp && userServerData.CompletedDays >= userServerData.CurrentDay) {
+            if (userServerData.NextRequestTimestamp >= requestTimestamp && userServerData.CompletedDays >= userServerData.CurrentDay) {
                 // Good. Client need new level.
                 userServerData.DeadlineTimestamp = userServerData.NextRequestTimestamp; // request time in seconds + 1 day in seconds.
                 userServerData.NextRequestTimestamp += settings.Timeout;
@@ -134,6 +134,11 @@ handlers.processDaily = function (args) {
 
     return result;
 };
+
+function currentTimeInMilliSeconds() {
+    var now = new Date();
+    return now.getTime();
+}
 
 // Additional functionality.
 function currentTimeInSeconds() {
