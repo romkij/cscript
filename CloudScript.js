@@ -29,6 +29,7 @@ handlers.processDaily = function (args) {
 
     var settings = getTitleData(DailyKey);
 
+    var realDate = new Date();
     var requestTimestamp = currentTimeInSeconds();
 
     var userClientData = {
@@ -71,10 +72,9 @@ handlers.processDaily = function (args) {
 
         userServerData = JSON.parse(userServerData.Data[DailyKey].Value);
 
-
         if (requestTimestamp >= userServerData.DeadlineTimestamp) {
             // Time to check.
-            if (userServerData.NextRequestTimestamp >= requestTimestamp && userServerData.CompletedDays >= userServerData.CurrentDay) {
+            if (userServerData.NextRequestTimestamp >= requestTimestamp && userClientData.CompletedDays >= userServerData.CurrentDay) {
                 // Good. Client need new level.
                 userServerData.DeadlineTimestamp = userServerData.NextRequestTimestamp; // request time in seconds + 1 day in seconds.
                 userServerData.NextRequestTimestamp += settings.Timeout;
@@ -95,6 +95,7 @@ handlers.processDaily = function (args) {
             userServerData.CurrentProgress = userClientData.CurrentProgress;
             userServerData.CompletedDays = userClientData.CompletedDays;
         }
+
     }
 
     var result = {
@@ -104,7 +105,8 @@ handlers.processDaily = function (args) {
         CurrentProgress: userServerData.CurrentProgress,
         DeadlineTimestamp: userServerData.DeadlineTimestamp,
         IsNeedReward: false,
-        RewardedItems: []
+        RewardedItems: [],
+        RealDate: realDate
     };
 
     if (userClientData.IsNeedReward) {
