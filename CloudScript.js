@@ -153,6 +153,9 @@ handlers.getCorrectedStatistics = function (args) {
       PlayFabId: currentPlayerId
     }).UserStatistics;
 
+    return serverStatistics;
+
+
     for (var stat in clientStatistics)
     {
         if (!clientStatistics.hasOwnProperty(stat))
@@ -194,6 +197,7 @@ handlers.getCorrectedStatistics = function (args) {
             serverStatistics[stat] = clientStatistics[stat];
         }
     }
+
 
     server.UpdateUserStatistics({
         PlayFabId: currentPlayerId,
