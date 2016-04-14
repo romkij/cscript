@@ -197,6 +197,9 @@ handlers.getCorrectedStatistics = function (args) {
     }
 
 
+    return serverStatistics;
+
+
     server.UpdateUserStatistics({
         PlayFabId: currentPlayerId,
         UserStatistics: serverStatistics
