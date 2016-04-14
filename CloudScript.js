@@ -148,13 +148,13 @@ handlers.getCorrectedStatistics = function (args) {
 
     var settings = getTitleData(SettingsKey);
 
-    var clientStatistics = args.Statistic;
+    var clientStatistics = args.Statistics;
 
     var serverStatistics = server.GetUserStatistics({
       PlayFabId: currentPlayerId
     });
 
-    serverStatistics = JSON.parse(serverStatistics.Data[StatisticsKey]);
+    serverStatistics = JSON.parse(serverStatistics[StatisticsKey]);
 
     for (var stat in clientStatistics)
     {
