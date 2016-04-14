@@ -163,12 +163,11 @@ handlers.getCorrectedStatistics = function (args) {
             var statName = stat.substring(7);
             var collection = stat.substring(0, 7);
 
-
             var statSettings = settings.filter(function (obj) {
                 return obj.Name == statName;
             });
 
-            return statSettings.DefaultCollection;
+            return statSettings[0].Info;
 
             var calculation = statSettings.Info.filter(function (obj) {
                 return obj.CollectionType == collection;
