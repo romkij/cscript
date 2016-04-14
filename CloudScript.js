@@ -147,7 +147,7 @@ handlers.getCorrectedStatistics = function (args) {
 
     var settings = getTitleData(SettingsKey);
 
-    var clientStatistics = args.Statistics;
+    var clientStatistics = args.StatisticCollection;
 
     return clientStatistics;
 
