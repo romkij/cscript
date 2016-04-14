@@ -162,8 +162,6 @@ handlers.getCorrectedStatistics = function (args) {
         {
             var collection = stat.substring(0, 7);
 
-            return collection;
-
             var statSettings = settings.filter(function (obj) {
                 return obj.Name == stat;
             });
