@@ -165,10 +165,10 @@ handlers.getCorrectedStatistics = function (args) {
 
 
             var statSettings = settings.filter(function (obj) {
-                return obj.Name == statName;
+                return obj.Name == statName && obj.Info.;
             });
 
-            return statSettings.Info;
+            return statSettings.info;
 
             var calculation = statSettings.Info.filter(function (obj) {
                 return obj.CollectionType == collection;
