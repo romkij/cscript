@@ -154,7 +154,7 @@ handlers.getCorrectedStatistics = function (args) {
       PlayFabId: currentPlayerId
     });
 
-    serverStatistics = JSON.parse(serverStatistics[StatisticsKey]);
+    serverStatistics = JSON.parse(serverStatistics);
 
     for (var stat in clientStatistics)
     {
