@@ -196,14 +196,13 @@ handlers.getCorrectedStatistics = function (args) {
         }
     }
 
-
-    return serverStatistics;
-
-
-    server.UpdateUserStatistics({
-        PlayFabId: currentPlayerId,
-        UserStatistics: serverStatistics
-    });
+    if (!isEmpty(serverStatistics))
+    {
+        server.UpdateUserStatistics({
+            PlayFabId: currentPlayerId,
+            UserStatistics: serverStatistics
+        });
+    }
 
     return { UserStatistics: serverStatistics };
 };
@@ -230,4 +229,8 @@ function getTitleData(key) {
 
     if (titleData.Data.hasOwnProperty(key))
         return JSON.parse(titleData.Data[key])
+}
+
+function isEmpty(obj) {
+    return Object.keys(obj).length === 0 && JSON.stringify(obj) === JSON.stringify({});
 }
