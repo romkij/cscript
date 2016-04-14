@@ -153,7 +153,6 @@ handlers.getCorrectedStatistics = function (args) {
       PlayFabId: currentPlayerId
     }).UserStatistics;
 
-
     for (var stat in clientStatistics)
     {
         if (!clientStatistics.hasOwnProperty(stat))
@@ -165,9 +164,9 @@ handlers.getCorrectedStatistics = function (args) {
 
             var statSettings = settings.filter(function (obj) {
                 return obj.Name == statName;
-            });
+            })[0];
 
-            var calculation = statSettings[0].Info.filter(function (obj) {
+            var calculation = statSettings.Info.filter(function (obj) {
                 return obj.CollectionType == collection;
             })[0].CalculateType;
 
@@ -188,6 +187,8 @@ handlers.getCorrectedStatistics = function (args) {
                 case "Minimum":
                     serverStatistics[stat] = clientValue < serverValue ? clientValue : serverValue;
                     break;
+                default:
+                    return "DeFAULT";
             }
         }
         else
