@@ -154,6 +154,8 @@ handlers.getCorrectedStatistics = function (args) {
       PlayFabId: currentPlayerId
     }).UserStatistics;
 
+    return settings;
+
     for (var stat in clientStatistics)
     {
         if (!clientStatistics.hasOwnProperty(stat))
