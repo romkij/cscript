@@ -204,7 +204,7 @@ handlers.getCorrectedStatistics = function (args) {
         });
     }
 
-    return { UserStatistics: serverStatistics };
+    return serverStatistics;
 };
 
 // Additional functionality.
