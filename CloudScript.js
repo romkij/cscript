@@ -155,7 +155,7 @@ handlers.getCorrectedStatistics = function (args) {
     });
 
     return serverStatistics;
-    serverStatistics = JSON.parse(serverStatistics[StatisticsKey]);
+    serverStatistics = JSON.parse(serverStatistics).UserStatistics;
 
     for (var stat in clientStatistics)
     {
