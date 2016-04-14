@@ -167,11 +167,9 @@ handlers.getCorrectedStatistics = function (args) {
                 return obj.Name == statName;
             });
 
-            return statSettings[0].Info;
-
-            var calculation = statSettings.Info.filter(function (obj) {
+            var calculation = statSettings[0].Info.filter(function (obj) {
                 return obj.CollectionType == collection;
-            });
+            })[0].CalculateType;
 
             var serverValue = serverStatistics[stat];
             var clientValue = clientStatistics[stat];
