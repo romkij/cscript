@@ -165,7 +165,7 @@ handlers.getCorrectedStatistics = function (args) {
 
 
             var statSettings = settings.filter(function (obj) {
-                return obj.Name == statName && obj.Info.;
+                return obj.Name == statName;
             });
 
             return statSettings.info;
