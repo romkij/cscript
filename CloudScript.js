@@ -160,10 +160,12 @@ handlers.getCorrectedStatistics = function (args) {
             continue;
         if (serverStatistics.hasOwnProperty(stat))
         {
+            var statName = stat.substring(7);
             var collection = stat.substring(0, 7);
 
+
             var statSettings = settings.filter(function (obj) {
-                return obj.Name == stat;
+                return obj.Name == statName;
             });
 
             return statSettings;
