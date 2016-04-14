@@ -156,7 +156,10 @@ handlers.getCorrectedStatistics = function (args) {
     for (var stat in clientStatistics)
     {
         if (!clientStatistics.hasOwnProperty(stat))
+        {
+            return stat;
             continue;
+        }
         if (serverStatistics.hasOwnProperty(stat))
         {
             var statName = stat.substring(7);
@@ -187,8 +190,6 @@ handlers.getCorrectedStatistics = function (args) {
                 case "Minimum":
                     serverStatistics[stat] = clientValue < serverValue ? clientValue : serverValue;
                     break;
-                default:
-                    return "DeFAULT";
             }
         }
         else
