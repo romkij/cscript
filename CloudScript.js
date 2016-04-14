@@ -144,7 +144,6 @@ handlers.processDaily = function (args) {
 
 handlers.getCorrectedStatistics = function (args) {
     var SettingsKey = "Statistics";
-    var StatisticsKey = "UserStatistics";
 
     var settings = getTitleData(SettingsKey);
 
