@@ -157,7 +157,6 @@ handlers.getCorrectedStatistics = function (args) {
     {
         if (!clientStatistics.hasOwnProperty(stat))
         {
-            return stat;
             continue;
         }
         if (serverStatistics.hasOwnProperty(stat))
@@ -175,6 +174,9 @@ handlers.getCorrectedStatistics = function (args) {
 
             var serverValue = serverStatistics[stat];
             var clientValue = clientStatistics[stat];
+
+            return "TA";
+
 
             switch (calculation)
             {
