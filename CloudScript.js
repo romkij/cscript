@@ -154,8 +154,6 @@ handlers.getCorrectedStatistics = function (args) {
       PlayFabId: currentPlayerId
     }).UserStatistics;
 
-    return settings;
-
     for (var stat in clientStatistics)
     {
         if (!clientStatistics.hasOwnProperty(stat))
@@ -163,6 +161,8 @@ handlers.getCorrectedStatistics = function (args) {
         if (serverStatistics.hasOwnProperty(stat))
         {
             var collection = stat.substring(0, 7);
+
+            return stat;
 
             var statSettings = settings.filter(function (obj) {
                 return obj.Name == stat;
