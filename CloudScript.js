@@ -166,6 +166,8 @@ handlers.getCorrectedStatistics = function (args) {
                 return obj.Name == stat;
             });
 
+            return statSettings;
+
             var calculation = statSettings.Info.filter(function (obj) {
                 return obj.CollectionType == collection;
             });
