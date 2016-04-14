@@ -149,8 +149,6 @@ handlers.getCorrectedStatistics = function (args) {
 
     var clientStatistics = args.Statistics;
 
-    return clientStatistics;
-
     var serverStatistics = server.GetUserStatistics({
       PlayFabId: currentPlayerId
     }).UserStatistics;
