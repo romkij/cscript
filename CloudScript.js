@@ -142,6 +142,69 @@ handlers.processDaily = function (args) {
     return result;
 };
 
+handlers.getCorrectedStatistics = function (args) {
+    var SettingsKey = "Statistics";
+    var StatisticsKey = "UserStatistics";
+
+    var settings = getTitleData(SettingsKey);
+
+    var clientStatistics = args.Statistic;
+
+    var serverStatistics = server.GetUserStatistics({
+      PlayFabId: currentPlayerId
+    });
+
+    serverStatistics = JSON.parse(serverStatistics.Data[StatisticsKey]);
+
+    for (var stat in clientStatistics)
+    {
+        if (!clientStatistics.hasOwnProperty(stat))
+            continue;
+        if (serverStatistics.hasOwnProperty(stat))
+        {
+            var collection = stat.substring(0, 7);
+
+            var statSettings = settings.filter(function (obj) {
+                return obj.Name == stat;
+            });
+
+            var calculation = statSettings.Info.filter(function (obj) {
+                return obj.CollectionType == collection;
+            });
+
+            var serverValue = serverStatistics[stat];
+            var clientValue = clientStatistics[stat];
+
+            switch (calculation)
+            {
+                case "Sum":
+                    serverStatistics[stat] += clientValue > serverValue ? clientValue - serverValue : 0;
+                    break;
+                case "Last":
+                    serverStatistics[stat] = clientValue;
+                    break;
+                case "Maximum":
+                    serverStatistics[stat] = clientValue > serverValue ? clientValue : serverValue;
+                    break;
+                case "Minimum":
+                    serverStatistics[stat] = clientValue < serverValue ? clientValue : serverValue;
+                    break;
+            }
+        }
+        else
+        {
+            serverStatistics[stat] = clientStatistics[stat];
+        }
+    }
+
+    server.UpdateUserStatistics({
+        PlayFabId: currentPlayerId,
+        UserStatistics: serverStatistics
+    });
+
+    return { UserStatistics: serverStatistics };
+};
+
 // Additional functionality.
 function currentTimeInSeconds() {
     var now = new Date();
