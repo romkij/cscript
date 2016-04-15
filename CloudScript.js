@@ -153,15 +153,13 @@ handlers.getCorrectedStatistics = function (args) {
       PlayFabId: currentPlayerId
     }).UserStatistics;
 
-
-    return clientStatistics;
+    var difference = {};
 
     for (var stat in clientStatistics)
     {
         if (!clientStatistics.hasOwnProperty(stat))
-        {
             continue;
-        }
+
         if (serverStatistics.hasOwnProperty(stat))
         {
             var statName = stat.substring(7);
@@ -182,16 +180,20 @@ handlers.getCorrectedStatistics = function (args) {
             switch (calculation)
             {
                 case "Sum":
-                    serverStatistics[stat] += clientValue > serverValue ? clientValue - serverValue : 0;
+                    difference[stat] = clientValue > serverValue ? clientValue - serverValue : 0;
+                    serverStatistics[stat] += difference[stat];
                     break;
                 case "Last":
-                    serverStatistics[stat] = clientValue;
+                    difference[stat] = clientValue;
+                    serverStatistics[stat] = difference[stat];
                     break;
                 case "Maximum":
-                    serverStatistics[stat] = clientValue > serverValue ? clientValue : serverValue;
+                    difference[stat] = clientValue > serverValue ? clientValue : serverValue;
+                    serverStatistics[stat] = difference[stat];
                     break;
                 case "Minimum":
-                    serverStatistics[stat] = clientValue < serverValue ? clientValue : serverValue;
+                    difference[stat] = clientValue < serverValue ? clientValue : serverValue;
+                    serverStatistics[stat] = difference[stat];
                     break;
             }
         }
@@ -201,11 +203,6 @@ handlers.getCorrectedStatistics = function (args) {
         }
     }
 
-
-
-
-
-
     if (!isEmpty(serverStatistics))
     {
         server.UpdateUserStatistics({
@@ -214,7 +211,13 @@ handlers.getCorrectedStatistics = function (args) {
         });
     }
 
-    return serverStatistics;
+    for (var stat in serverStatistics)
+    {
+        if (!difference.hasOwnProperty(stat))
+            difference[stat] = serverStatistics[stat];
+    }
+
+    return difference;
 };
 
 // Additional functionality.
