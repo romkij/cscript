@@ -153,8 +153,6 @@ handlers.getCorrectedStatistics = function (args) {
       PlayFabId: currentPlayerId
     }).UserStatistics;
 
-    var difference = {};
-
     for (var stat in clientStatistics)
     {
         if (!clientStatistics.hasOwnProperty(stat))
@@ -180,20 +178,16 @@ handlers.getCorrectedStatistics = function (args) {
             switch (calculation)
             {
                 case "Sum":
-                    difference[stat] = clientValue > serverValue ? clientValue - serverValue : 0;
-                    serverStatistics[stat] += difference[stat];
+                    serverStatistics[stat] += clientValue > serverValue ? clientValue - serverValue : 0;
                     break;
                 case "Last":
-                    difference[stat] = clientValue;
-                    serverStatistics[stat] = difference[stat];
+                    serverStatistics[stat] = clientValue;
                     break;
                 case "Maximum":
-                    difference[stat] = clientValue > serverValue ? clientValue : serverValue;
-                    serverStatistics[stat] = difference[stat];
+                    serverStatistics[stat] = clientValue > serverValue ? clientValue : serverValue;
                     break;
                 case "Minimum":
-                    difference[stat] = clientValue < serverValue ? clientValue : serverValue;
-                    serverStatistics[stat] = difference[stat];
+                    serverStatistics[stat] = clientValue < serverValue ? clientValue : serverValue;
                     break;
             }
         }
@@ -211,13 +205,7 @@ handlers.getCorrectedStatistics = function (args) {
         });
     }
 
-    for (var stat in serverStatistics)
-    {
-        if (!difference.hasOwnProperty(stat))
-            difference[stat] = serverStatistics[stat];
-    }
-
-    return difference;
+    return serverStatistics;
 };
 
 // Additional functionality.
