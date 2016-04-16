@@ -246,6 +246,8 @@ function getSettingsByFullName(fullName, settings) {
         if (Contains(fullName, stat.Name))
             return stat.Name;//getCalculationTypeByFullName(fullName, stat);
     }
+
+    return "FAFFFF";
 }
 
 function getCalculationTypeByFullName(fullName, setting) {
