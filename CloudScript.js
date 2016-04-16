@@ -162,6 +162,8 @@ handlers.getCorrectedStatistics = function (args) {
         {
             // var collection = stat.substring(0, 7);
 
+            return settings;
+
             var statSettings = getSettingsByFullName(stat, settings);
 
             return { stat: "fas" + statSettings};
