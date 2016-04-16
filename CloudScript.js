@@ -158,13 +158,13 @@ handlers.getCorrectedStatistics = function (args) {
         if (!clientStatistics.hasOwnProperty(statFullName))
             continue;
 
+        var calculation = getCalculationType(statFullName, settings);
+
+        if (calculation === undefined)
+            continue;
+
         if (serverStatistics.hasOwnProperty(statFullName))
         {
-            var calculation = getCalculationType(statFullName, settings);
-
-            if (calculation === undefined)
-                continue;
-
             var serverValue = serverStatistics[statFullName];
             var clientValue = clientStatistics[statFullName];
 
