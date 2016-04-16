@@ -242,11 +242,10 @@ function isEmpty(obj) {
 }
 
 function getSettingsByFullName(fullName, settings) {
-    for (var stat in settings)
-    {
+    for (var stat in settings) {
         if (Contains(fullName, stat.Name))
             return getCalculationTypeByFullName(fullName, stat);
-
+    }
 }
 
 function getCalculationTypeByFullName(fullName, setting) {
