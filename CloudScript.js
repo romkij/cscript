@@ -162,6 +162,9 @@ handlers.getCorrectedStatistics = function (args) {
         {
             var calculation = getCalculationType(statFullName, settings);
 
+            if (calculation === undefined)
+                continue;
+
             var serverValue = serverStatistics[statFullName];
             var clientValue = clientStatistics[statFullName];
 
@@ -234,10 +237,6 @@ function getCalculationType(fullname, settings)
     if (typeof statSettings != "undefined")
     {
         return getCalculationTypeByFullName(fullname, statSettings.Info);
-    }
-    else
-    {
-        return null;
     }
 }
 
