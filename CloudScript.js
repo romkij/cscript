@@ -162,7 +162,7 @@ handlers.getCorrectedStatistics = function (args) {
         {
             // var collection = stat.substring(0, 7);
 
-            return settings;
+            //return settings;
 
             var statSettings = getSettingsByFullName(stat, settings);
 
@@ -249,7 +249,7 @@ function getSettingsByFullName(fullName, settings) {
             return stat.Name;//getCalculationTypeByFullName(fullName, stat);
     }
 
-    return "FAFFFF";
+    return fullName;
 }
 
 function getCalculationTypeByFullName(fullName, setting) {
