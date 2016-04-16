@@ -160,16 +160,18 @@ handlers.getCorrectedStatistics = function (args) {
 
         if (serverStatistics.hasOwnProperty(stat))
         {
-            var statName = stat.substring(7);
-            var collection = stat.substring(0, 7);
+            // var collection = stat.substring(0, 7);
 
-            var statSettings = settings.filter(function (obj) {
-                return obj.Name == statName;
-            })[0];
+            var statSettings = getSettingsByFullName(stat, settings);
+            var calculation = getCalculationTypeByFullName(stat, statSettings);
 
-            var calculation = statSettings.Info.filter(function (obj) {
-                return obj.CollectionType == collection;
-            })[0].CalculateType;
+            // var statSettings = settings.filter(function (obj) {
+            //     return obj.Name == statName;
+            // })[0];
+            //
+            // var calculation = statSettings.Info.filter(function (obj) {
+            //     return obj.CollectionType == collection;
+            // })[0].CalculateType;
 
             var serverValue = serverStatistics[stat];
             var clientValue = clientStatistics[stat];
@@ -234,4 +236,20 @@ function getTitleData(key) {
 
 function isEmpty(obj) {
     return Object.keys(obj).length === 0 && JSON.stringify(obj) === JSON.stringify({});
+}
+
+function getSettingsByFullName(fullName, settings) {
+    for (var stat in settings)
+    {
+        if (fullName.contains(stat.Name))
+            return stat;
+    }
+}
+
+function getCalculationTypeByFullName(fullName, setting) {
+    for (var info in setting.Info)
+    {
+        if (fullName.contains(info.CollectionType))
+            return info.CalculateType;
+    }
 }
