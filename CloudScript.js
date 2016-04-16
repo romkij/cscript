@@ -153,54 +153,37 @@ handlers.getCorrectedStatistics = function (args) {
       PlayFabId: currentPlayerId
     }).UserStatistics;
 
-    for (var stat in clientStatistics)
+    for (var statFullName in clientStatistics)
     {
-        if (!clientStatistics.hasOwnProperty(stat))
+        if (!clientStatistics.hasOwnProperty(statFullName))
             continue;
 
-        if (serverStatistics.hasOwnProperty(stat))
+        if (serverStatistics.hasOwnProperty(statFullName))
         {
-            // var collection = stat.substring(0, 7);
+            var calculation = getCalculationType(statFullName, settings);
 
-            //return settings;
-
-            var statSettings = getSettingsByFullName(stat, settings);
-
-            return { stat:  statSettings};
-
-            var calculation = getCalculationTypeByFullName(stat, statSettings);
-
-            // var statSettings = settings.filter(function (obj) {
-            //     return obj.Name == statName;
-            // })[0];
-            //
-            // var calculation = statSettings.Info.filter(function (obj) {
-            //     return obj.CollectionType == collection;
-            // })[0].CalculateType;
-
-            var serverValue = serverStatistics[stat];
-            var clientValue = clientStatistics[stat];
-
+            var serverValue = serverStatistics[statFullName];
+            var clientValue = clientStatistics[statFullName];
 
             switch (calculation)
             {
                 case "Sum":
-                    serverStatistics[stat] += clientValue > serverValue ? clientValue - serverValue : 0;
+                    serverStatistics[statFullName] += clientValue > serverValue ? clientValue - serverValue : 0;
                     break;
                 case "Last":
-                    serverStatistics[stat] = clientValue;
+                    serverStatistics[statFullName] = clientValue;
                     break;
                 case "Maximum":
-                    serverStatistics[stat] = clientValue > serverValue ? clientValue : serverValue;
+                    serverStatistics[statFullName] = clientValue > serverValue ? clientValue : serverValue;
                     break;
                 case "Minimum":
-                    serverStatistics[stat] = clientValue < serverValue ? clientValue : serverValue;
+                    serverStatistics[statFullName] = clientValue < serverValue ? clientValue : serverValue;
                     break;
             }
         }
         else
         {
-            serverStatistics[stat] = clientStatistics[stat];
+            serverStatistics[statFullName] = clientStatistics[statFullName];
         }
     }
 
@@ -243,21 +226,36 @@ function isEmpty(obj) {
     return Object.keys(obj).length === 0 && JSON.stringify(obj) === JSON.stringify({});
 }
 
-function getSettingsByFullName(fullName, settings) {
-    for (var statSettings in settings) {
 
-        return statSettings;
+function getCalculationType(fullname, settings)
+{
+    var statSettings = getSettingsByFullName(fullname, settings);
 
-        if (Contains(fullName, statSettings.Name))
-            return statSettings.Name;//getCalculationTypeByFullName(fullName, stat);
+    if (typeof statSettings != "undefined")
+    {
+        return getCalculationTypeByFullName(fullname, statSettings.Info);
     }
-
-    return settings;
+    else
+    {
+        return null;
+    }
 }
 
-function getCalculationTypeByFullName(fullName, setting) {
-    for (var info in setting.Info)
+function getSettingsByFullName(fullName, settings) {
+    for (var i = 0; i < settings.length; i++)
     {
+        var stat = settings[i];
+
+        if (Contains(fullName, stat.Name))
+            return stat;
+    }
+}
+
+function getCalculationTypeByFullName(fullName,  statInfo) {
+    for (var i = 0; i < statInfo.length; i++)
+    {
+        var info = statInfo[i];
+
         if (Contains(fullName, info.CollectionType))
             return info.CalculateType;
     }
