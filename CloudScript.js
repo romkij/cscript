@@ -241,7 +241,7 @@ function isEmpty(obj) {
 function getSettingsByFullName(fullName, settings) {
     for (var stat in settings)
     {
-        if (fullName.contains(stat.Name))
+        if (Contains(fullName, stat.Name))
             return stat;
     }
 }
@@ -249,7 +249,11 @@ function getSettingsByFullName(fullName, settings) {
 function getCalculationTypeByFullName(fullName, setting) {
     for (var info in setting.Info)
     {
-        if (fullName.contains(info.CollectionType))
+        if (Contains(fullName, info.CollectionType))
             return info.CalculateType;
     }
+}
+
+function Contains(a, b) {
+    return a.indexOf(b) >= 0;
 }
