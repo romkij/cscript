@@ -163,6 +163,9 @@ handlers.getCorrectedStatistics = function (args) {
             // var collection = stat.substring(0, 7);
 
             var statSettings = getSettingsByFullName(stat, settings);
+
+            return statSettings;
+
             var calculation = getCalculationTypeByFullName(stat, statSettings);
 
             // var statSettings = settings.filter(function (obj) {
