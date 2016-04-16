@@ -249,7 +249,7 @@ function getSettingsByFullName(fullName, settings) {
             return stat.Name;//getCalculationTypeByFullName(fullName, stat);
     }
 
-    return fullName;
+    return settings;
 }
 
 function getCalculationTypeByFullName(fullName, setting) {
