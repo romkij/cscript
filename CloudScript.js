@@ -164,7 +164,7 @@ handlers.getCorrectedStatistics = function (args) {
 
             var statSettings = getSettingsByFullName(stat, settings);
 
-            return { stat: statSettings};
+            return { stat: "fas" + statSettings};
 
             var calculation = getCalculationTypeByFullName(stat, statSettings);
 
