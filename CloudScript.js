@@ -245,8 +245,8 @@ function getSettingsByFullName(fullName, settings) {
     for (var stat in settings)
     {
         if (Contains(fullName, stat.Name))
-            return stat;
-    }
+            return getCalculationTypeByFullName(fullName, stat);
+
 }
 
 function getCalculationTypeByFullName(fullName, setting) {
