@@ -21,7 +21,7 @@ handlers.grantUserItems = function(args) {
 		ItemIds : [ itemId ]
 	});
 	
-	return result;
+	return result.ItemGrants;
 };
 
 handlers.processDaily = function (args) {
@@ -74,7 +74,7 @@ handlers.processDaily = function (args) {
 
         if (requestTimestamp >= userServerData.DeadlineTimestamp) {
 
-            log.debug("Time to check!");
+            log.debug("Time to check!!!! ");
             // Time to check.
             if (userServerData.NextRequestTimestamp >= requestTimestamp && userClientData.CompletedDays >= userServerData.CurrentDay) {
                 // Good. Client need new level.
@@ -97,7 +97,7 @@ handlers.processDaily = function (args) {
             userServerData.CurrentProgress = userClientData.CurrentProgress;
             userServerData.CompletedDays = userClientData.CompletedDays;
 
-            log.debug("Not time check!");
+            log.debug("Not time check!!!! ");
         }
 
     }
