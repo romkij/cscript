@@ -20,8 +20,9 @@ handlers.grantUserItems = function(args) {
 		PlayFabId : currentPlayerId,
 		ItemIds : [ itemId ]
 	});
-	
-	return result.ItemGrants;
+
+
+	return result.ItemGrantResults;
 };
 
 handlers.processDaily = function (args) {
