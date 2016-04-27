@@ -56,12 +56,12 @@ handlers.processDaily = function (args) {
     //     });
     // }
 
-    if (!userServerData.Data.hasOwnProperty(DailyKey) || userClientData.IsCheater) {
+    if (!userServerData.Data.hasOwnProperty(DailyKey) || userClientData.IsCheater || userClientData.CompletedDays >= 7) {
         // First Request Daily.
         userServerData = {
             WeekId: guid(),
-            CurrentDay: 1,
-            CompletedDays: 0,
+            CurrentDay:7,
+            CompletedDays: 6,
             CurrentProgress: 0,
             DeadlineTimestamp: requestTimestamp + settings.Timeout,
             NextRequestTimestamp: requestTimestamp + (settings.Timeout * 2)
@@ -102,7 +102,18 @@ handlers.processDaily = function (args) {
     }
 
 
-    if (true){//userClientData.IsNeedReward) {
+    var result = {
+        WeekId: userServerData.WeekId,
+        CurrentDay: userServerData.CurrentDay,
+        CompletedDays: userServerData.CompletedDays,
+        CurrentProgress: userServerData.CurrentProgress,
+        DeadlineTimestamp: userServerData.DeadlineTimestamp,
+        IsNeedReward: false,
+        RewardedItems: [],
+        RealDate: realDate
+    };
+
+    if (userClientData.IsNeedReward) {
         var reward = userClientData.CurrentDay >= settings.MaxDays ? settings.WeekReward : settings.DailyReward;
 
         server.GrantItemsToUser({
@@ -115,8 +126,9 @@ handlers.processDaily = function (args) {
             ContainerItemId: reward
         });
 
-        userServerData.CompletedDays = userServerData.CurrentDay >= settings.MaxDays ? 0 : userServerData.CompletedDays;
-        userServerData.CurrentDay = userServerData.CompletedDays + 1;
+        result.CompletedDays = userServerData.CompletedDays = userServerData.CurrentDay >= settings.MaxDays ? 0 : userServerData.CompletedDays;
+        result.CurrentDay = userServerData.CurrentDay = userServerData.CompletedDays + 1;
+
 
         result.RewardedItems = unlockResult.GrantedItems;
     }
@@ -128,18 +140,6 @@ handlers.processDaily = function (args) {
             "IsCheater": JSON.stringify(userClientData.IsCheater)
         }
     });
-
-
-    var result = {
-        WeekId: userServerData.WeekId,
-        CurrentDay: userServerData.CurrentDay,
-        CompletedDays: userServerData.CompletedDays,
-        CurrentProgress: userServerData.CurrentProgress,
-        DeadlineTimestamp: userServerData.DeadlineTimestamp,
-        IsNeedReward: false,
-        RewardedItems: [],
-        RealDate: realDate
-    };
 
     return result;
 };
