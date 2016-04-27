@@ -56,12 +56,12 @@ handlers.processDaily = function (args) {
     //     });
     // }
 
-    if (!userServerData.Data.hasOwnProperty(DailyKey) || userClientData.IsCheater || userClientData.CompletedDays >= 7) {
+    if (!userServerData.Data.hasOwnProperty(DailyKey) || userClientData.IsCheater) {
         // First Request Daily.
         userServerData = {
             WeekId: guid(),
-            CurrentDay:7,
-            CompletedDays: 6,
+            CurrentDay: 1,
+            CompletedDays: 0,
             CurrentProgress: 0,
             DeadlineTimestamp: requestTimestamp + settings.Timeout,
             NextRequestTimestamp: requestTimestamp + (settings.Timeout * 2)
@@ -128,8 +128,6 @@ handlers.processDaily = function (args) {
 
         result.CompletedDays = userServerData.CompletedDays = userServerData.CurrentDay >= settings.MaxDays ? 0 : userServerData.CompletedDays;
         result.CurrentDay = userServerData.CurrentDay = userServerData.CompletedDays + 1;
-
-
         result.RewardedItems = unlockResult.GrantedItems;
     }
 
