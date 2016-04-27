@@ -101,7 +101,8 @@ handlers.processDaily = function (args) {
 
     }
 
-    if (userClientData.IsNeedReward) {
+
+    if (true){//userClientData.IsNeedReward) {
         var reward = userClientData.CurrentDay >= settings.MaxDays ? settings.WeekReward : settings.DailyReward;
 
         server.GrantItemsToUser({
