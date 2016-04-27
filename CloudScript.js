@@ -20,7 +20,6 @@ handlers.grantUserItems = function(args) {
 		ItemIds : args.ItemIds
 	});
 
-
 	return result.ItemGrantResults;
 };
 
@@ -102,17 +101,6 @@ handlers.processDaily = function (args) {
 
     }
 
-    var result = {
-        WeekId: userServerData.WeekId,
-        CurrentDay: userServerData.CurrentDay,
-        CompletedDays: userServerData.CompletedDays,
-        CurrentProgress: userServerData.CurrentProgress,
-        DeadlineTimestamp: userServerData.DeadlineTimestamp,
-        IsNeedReward: false,
-        RewardedItems: [],
-        RealDate: realDate
-    };
-
     if (userClientData.IsNeedReward) {
         var reward = userClientData.CurrentDay >= settings.MaxDays ? settings.WeekReward : settings.DailyReward;
 
@@ -127,6 +115,7 @@ handlers.processDaily = function (args) {
         });
 
         userServerData.CompletedDays = userServerData.CurrentDay >= settings.MaxDays ? 0 : userServerData.CompletedDays;
+        userServerData.CurrentDay = userServerData.CompletedDays + 1;
 
         result.RewardedItems = unlockResult.GrantedItems;
     }
@@ -138,6 +127,18 @@ handlers.processDaily = function (args) {
             "IsCheater": JSON.stringify(userClientData.IsCheater)
         }
     });
+
+
+    var result = {
+        WeekId: userServerData.WeekId,
+        CurrentDay: userServerData.CurrentDay,
+        CompletedDays: userServerData.CompletedDays,
+        CurrentProgress: userServerData.CurrentProgress,
+        DeadlineTimestamp: userServerData.DeadlineTimestamp,
+        IsNeedReward: false,
+        RewardedItems: [],
+        RealDate: realDate
+    };
 
     return result;
 };
