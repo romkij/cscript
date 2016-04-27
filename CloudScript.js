@@ -45,7 +45,7 @@ handlers.processDaily = function (args) {
         Keys: [DailyKey]
     });
 
-    var rewardItems = {};
+    var rewardItems;
 
     if (!userServerData.Data.hasOwnProperty(DailyKey) || userClientData.IsCheater) {
         // First Request Daily.
