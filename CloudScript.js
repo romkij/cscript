@@ -109,7 +109,6 @@ handlers.processDaily = function (args) {
 
     }
 
-
     var result = {
         WeekId: userServerData.WeekId,
         CurrentDay: userServerData.CurrentDay,
@@ -120,23 +119,6 @@ handlers.processDaily = function (args) {
         RewardedItems: rewardItems,
         RealDate: realDate
     };
-
-    // if (userClientData.IsNeedReward) {
-    //     var reward = userClientData.CurrentDay >= settings.MaxDays ? settings.WeekReward : settings.DailyReward;
-    //
-    //     server.GrantItemsToUser({
-    //         PlayFabId: currentPlayerId,
-    //         ItemIds: [reward]
-    //     });
-    //
-    //     var unlockResult = server.UnlockContainerItem({
-    //         PlayFabId: currentPlayerId,
-    //         ContainerItemId: reward
-    //     });
-    //
-    //     result.CompletedDays = userServerData.CompletedDays = userServerData.CurrentDay >= settings.MaxDays ? 0 : userServerData.CompletedDays;
-    //     result.RewardedItems = unlockResult.GrantedItems;
-    // }
 
     server.UpdateUserInternalData({
         PlayFabId: currentPlayerId,
