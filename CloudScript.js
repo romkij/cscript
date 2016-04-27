@@ -45,16 +45,7 @@ handlers.processDaily = function (args) {
         Keys: [DailyKey]
     });
 
-    // if (userClientData.IsCheater) {
-    //     server.LogEvent({
-    //         PlayFabId: currentPlayerId,
-    //         EventName: "DailyCheater",
-    //         Body: {
-    //             "Day": userClientData.CurrentDay,
-    //             "Progress": userClientData.CurrentProgress
-    //         }
-    //     });
-    // }
+    var rewardItems = {};
 
     if (!userServerData.Data.hasOwnProperty(DailyKey) || userClientData.IsCheater) {
         // First Request Daily.
@@ -71,15 +62,32 @@ handlers.processDaily = function (args) {
 
         userServerData = JSON.parse(userServerData.Data[DailyKey].Value);
 
+        if (userClientData.IsNeedReward) {
+            var reward = userClientData.CurrentDay >= settings.MaxDays ? settings.WeekReward : settings.DailyReward;
+
+            server.GrantItemsToUser({
+                PlayFabId: currentPlayerId,
+                ItemIds: [reward]
+            });
+
+            var unlockResult = server.UnlockContainerItem({
+                PlayFabId: currentPlayerId,
+                ContainerItemId: reward
+            });
+
+            rewardItems = unlockResult.GrantedItems;
+        }
+
         if (requestTimestamp >= userServerData.DeadlineTimestamp) {
 
-            log.debug("Time to check!!!! ");
+            log.debug("Time to check!");
             // Time to check.
             if (userServerData.NextRequestTimestamp >= requestTimestamp && userClientData.CompletedDays >= userServerData.CurrentDay) {
                 // Good. Client need new level.
                 userServerData.DeadlineTimestamp = userServerData.NextRequestTimestamp; // request time in seconds + 1 day in seconds.
                 userServerData.NextRequestTimestamp += settings.Timeout;
                 userServerData.CurrentProgress = 0;
+                userServerData.CompletedDays = userServerData.CurrentDay >= settings.MaxDays ? 0 : userServerData.CompletedDays;
             }
             else {
                 // Bad. Too late to cry. Reset daily.
@@ -96,7 +104,7 @@ handlers.processDaily = function (args) {
             userServerData.CurrentProgress = userClientData.CurrentProgress;
             userServerData.CompletedDays = userClientData.CompletedDays;
 
-            log.debug("Not time check!!!! ");
+            log.debug("Not time check!");
         }
 
     }
@@ -109,27 +117,26 @@ handlers.processDaily = function (args) {
         CurrentProgress: userServerData.CurrentProgress,
         DeadlineTimestamp: userServerData.DeadlineTimestamp,
         IsNeedReward: false,
-        RewardedItems: [],
+        RewardedItems: rewardItems,
         RealDate: realDate
     };
 
-    if (userClientData.IsNeedReward) {
-        var reward = userClientData.CurrentDay >= settings.MaxDays ? settings.WeekReward : settings.DailyReward;
-
-        server.GrantItemsToUser({
-            PlayFabId: currentPlayerId,
-            ItemIds: [reward]
-        });
-
-        var unlockResult = server.UnlockContainerItem({
-            PlayFabId: currentPlayerId,
-            ContainerItemId: reward
-        });
-
-        result.CompletedDays = userServerData.CompletedDays = userServerData.CurrentDay >= settings.MaxDays ? 0 : userServerData.CompletedDays;
-        result.CurrentDay = userServerData.CurrentDay = userServerData.CompletedDays + 1;
-        result.RewardedItems = unlockResult.GrantedItems;
-    }
+    // if (userClientData.IsNeedReward) {
+    //     var reward = userClientData.CurrentDay >= settings.MaxDays ? settings.WeekReward : settings.DailyReward;
+    //
+    //     server.GrantItemsToUser({
+    //         PlayFabId: currentPlayerId,
+    //         ItemIds: [reward]
+    //     });
+    //
+    //     var unlockResult = server.UnlockContainerItem({
+    //         PlayFabId: currentPlayerId,
+    //         ContainerItemId: reward
+    //     });
+    //
+    //     result.CompletedDays = userServerData.CompletedDays = userServerData.CurrentDay >= settings.MaxDays ? 0 : userServerData.CompletedDays;
+    //     result.RewardedItems = unlockResult.GrantedItems;
+    // }
 
     server.UpdateUserInternalData({
         PlayFabId: currentPlayerId,
