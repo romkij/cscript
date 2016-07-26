@@ -14,14 +14,14 @@ handlers.newUserAction = function(args) {
 	return result;
 };
 
+
 handlers.grantUserItems = function(args) {
-	var itemId = args.itemId;
 	var result = server.GrantItemsToUser({
 		PlayFabId : currentPlayerId,
-		ItemIds : [ itemId ]
+        ItemIds: args.ItemIds
 	});
-	
-	return result;
+
+    return result.ItemGrantResults;
 };
 
 handlers.processDaily = function (args) {
@@ -46,16 +46,8 @@ handlers.processDaily = function (args) {
         Keys: [DailyKey]
     });
 
-    // if (userClientData.IsCheater) {
-    //     server.LogEvent({
-    //         PlayFabId: currentPlayerId,
-    //         EventName: "DailyCheater",
-    //         Body: {
-    //             "Day": userClientData.CurrentDay,
-    //             "Progress": userClientData.CurrentProgress
-    //         }
-    //     });
-    // }
+    
+    var rewardItems;
 
     if (!userServerData.Data.hasOwnProperty(DailyKey) || userClientData.IsCheater) {
         // First Request Daily.
@@ -72,15 +64,32 @@ handlers.processDaily = function (args) {
 
         userServerData = JSON.parse(userServerData.Data[DailyKey].Value);
 
+        if (userClientData.IsNeedReward) {
+            var reward = userClientData.CurrentDay >= settings.MaxDays ? settings.WeekReward : settings.DailyReward;
+
+            server.GrantItemsToUser({
+                PlayFabId: currentPlayerId,
+                ItemIds: [reward]
+            });
+
+            var unlockResult = server.UnlockContainerItem({
+                PlayFabId: currentPlayerId,
+                ContainerItemId: reward
+            });
+
+            rewardItems = unlockResult.GrantedItems;
+        }
+
         if (requestTimestamp >= userServerData.DeadlineTimestamp) {
 
-            log.debug("Time to check!!!! ");
+            log.debug("Time to check!");
             // Time to check.
             if (userServerData.NextRequestTimestamp >= requestTimestamp && userClientData.CompletedDays >= userServerData.CurrentDay) {
                 // Good. Client need new level.
                 userServerData.DeadlineTimestamp = userServerData.NextRequestTimestamp; // request time in seconds + 1 day in seconds.
                 userServerData.NextRequestTimestamp += settings.Timeout;
                 userServerData.CurrentProgress = 0;
+                userServerData.CompletedDays = userServerData.CurrentDay >= settings.MaxDays ? 0 : userServerData.CompletedDays;
             }
             else {
                 // Bad. Too late to cry. Reset daily.
@@ -97,7 +106,7 @@ handlers.processDaily = function (args) {
             userServerData.CurrentProgress = userClientData.CurrentProgress;
             userServerData.CompletedDays = userClientData.CompletedDays;
 
-            log.debug("Not time check!!!! ");
+            log.debug("Not time check!");
         }
 
     }
@@ -109,27 +118,9 @@ handlers.processDaily = function (args) {
         CurrentProgress: userServerData.CurrentProgress,
         DeadlineTimestamp: userServerData.DeadlineTimestamp,
         IsNeedReward: false,
-        RewardedItems: [],
+        RewardedItems: rewardItems,
         RealDate: realDate
     };
-
-    if (userClientData.IsNeedReward) {
-        var reward = userClientData.CurrentDay >= settings.MaxDays ? settings.WeekReward : settings.DailyReward;
-
-        server.GrantItemsToUser({
-            PlayFabId: currentPlayerId,
-            ItemIds: [reward]
-        });
-
-        var unlockResult = server.UnlockContainerItem({
-            PlayFabId: currentPlayerId,
-            ContainerItemId: reward
-        });
-
-        userServerData.CompletedDays = userServerData.CurrentDay >= settings.MaxDays ? 0 : userServerData.CompletedDays;
-
-        result.RewardedItems = unlockResult.GrantedItems;
-    }
 
     server.UpdateUserInternalData({
         PlayFabId: currentPlayerId,
@@ -140,6 +131,60 @@ handlers.processDaily = function (args) {
     });
 
     return result;
+};
+
+handlers.getCorrectedStatistics = function (args) {
+    var SettingsKey = "Statistics";
+
+    var settings = getTitleData(SettingsKey);
+
+    var clientStatistics = args.Statistics;
+
+    var serverStatistics = server.GetUserStatistics({
+        PlayFabId: currentPlayerId
+    }).UserStatistics;
+
+    for (var statFullName in clientStatistics) {
+        if (!clientStatistics.hasOwnProperty(statFullName))
+            continue;
+
+        var calculation = getCalculationType(statFullName, settings);
+
+        if (calculation === undefined)
+            continue;
+
+        if (serverStatistics.hasOwnProperty(statFullName)) {
+            var serverValue = serverStatistics[statFullName];
+            var clientValue = clientStatistics[statFullName];
+
+            switch (calculation) {
+                case "Sum":
+                    serverStatistics[statFullName] += clientValue > serverValue ? clientValue - serverValue : 0;
+                    break;
+                case "Last":
+                    serverStatistics[statFullName] = clientValue;
+                    break;
+                case "Maximum":
+                    serverStatistics[statFullName] = clientValue > serverValue ? clientValue : serverValue;
+                    break;
+                case "Minimum":
+                    serverStatistics[statFullName] = clientValue < serverValue ? clientValue : serverValue;
+                    break;
+            }
+        }
+        else {
+            serverStatistics[statFullName] = clientStatistics[statFullName];
+        }
+    }
+
+    if (!isEmpty(serverStatistics)) {
+        server.UpdateUserStatistics({
+            PlayFabId: currentPlayerId,
+            UserStatistics: serverStatistics
+        });
+    }
+
+    return serverStatistics;
 };
 
 // Additional functionality.
