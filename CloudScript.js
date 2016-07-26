@@ -14,14 +14,13 @@ handlers.newUserAction = function(args) {
 	return result;
 };
 
-
 handlers.grantUserItems = function(args) {
 	var result = server.GrantItemsToUser({
 		PlayFabId : currentPlayerId,
-        ItemIds: args.ItemIds
+		ItemIds : args.ItemIds
 	});
 
-    return result.ItemGrantResults;
+	return result.ItemGrantResults;
 };
 
 handlers.processDaily = function (args) {
@@ -46,7 +45,6 @@ handlers.processDaily = function (args) {
         Keys: [DailyKey]
     });
 
-    
     var rewardItems;
 
     if (!userServerData.Data.hasOwnProperty(DailyKey) || userClientData.IsCheater) {
@@ -141,10 +139,11 @@ handlers.getCorrectedStatistics = function (args) {
     var clientStatistics = args.Statistics;
 
     var serverStatistics = server.GetUserStatistics({
-        PlayFabId: currentPlayerId
+      PlayFabId: currentPlayerId
     }).UserStatistics;
 
-    for (var statFullName in clientStatistics) {
+    for (var statFullName in clientStatistics)
+    {
         if (!clientStatistics.hasOwnProperty(statFullName))
             continue;
 
@@ -153,11 +152,13 @@ handlers.getCorrectedStatistics = function (args) {
         if (calculation === undefined)
             continue;
 
-        if (serverStatistics.hasOwnProperty(statFullName)) {
+        if (serverStatistics.hasOwnProperty(statFullName))
+        {
             var serverValue = serverStatistics[statFullName];
             var clientValue = clientStatistics[statFullName];
 
-            switch (calculation) {
+            switch (calculation)
+            {
                 case "Sum":
                     serverStatistics[statFullName] += clientValue > serverValue ? clientValue - serverValue : 0;
                     break;
@@ -172,12 +173,14 @@ handlers.getCorrectedStatistics = function (args) {
                     break;
             }
         }
-        else {
+        else
+        {
             serverStatistics[statFullName] = clientStatistics[statFullName];
         }
     }
 
-    if (!isEmpty(serverStatistics)) {
+    if (!isEmpty(serverStatistics))
+    {
         server.UpdateUserStatistics({
             PlayFabId: currentPlayerId,
             UserStatistics: serverStatistics
@@ -209,4 +212,43 @@ function getTitleData(key) {
 
     if (titleData.Data.hasOwnProperty(key))
         return JSON.parse(titleData.Data[key])
+}
+
+function isEmpty(obj) {
+    return Object.keys(obj).length === 0 && JSON.stringify(obj) === JSON.stringify({});
+}
+
+
+function getCalculationType(fullname, settings)
+{
+    var statSettings = getSettingsByFullName(fullname, settings);
+
+    if (typeof statSettings != "undefined")
+    {
+        return getCalculationTypeByFullName(fullname, statSettings.Info);
+    }
+}
+
+function getSettingsByFullName(fullName, settings) {
+    for (var i = 0; i < settings.length; i++)
+    {
+        var stat = settings[i];
+
+        if (Contains(fullName, stat.Name))
+            return stat;
+    }
+}
+
+function getCalculationTypeByFullName(fullName,  statInfo) {
+    for (var i = 0; i < statInfo.length; i++)
+    {
+        var info = statInfo[i];
+
+        if (Contains(fullName, info.CollectionType))
+            return info.CalculateType;
+    }
+}
+
+function Contains(a, b) {
+    return a.indexOf(b) >= 0;
 }
