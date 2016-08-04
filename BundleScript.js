@@ -16,7 +16,7 @@ handlers.getManifest = function (args) {
         var liveOffset = internalData.LiveOffset;
 
         var manifests = internalData.Manifests.filter(function (manifest) {
-            return manifest.ClientVersion == clientVersion && manifest.CreatedTimestamp + liveOffset <= Date.now();
+            return manifest.ClientVersion == clientVersion && (manifest.CreatedTimestamp) + liveOffset <= Date.now();
         });
 
         manifests.sort(function (a, b) {
@@ -26,6 +26,8 @@ handlers.getManifest = function (args) {
                 return -1;
             return 0;
         });
+
+        return manifests;
 
         if (manifests.length > 0)
             return manifests[manifests.length - 1];
