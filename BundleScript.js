@@ -36,8 +36,9 @@ handlers.getManifest = function (args) {
             }).URL;
 
             var request = http.request(url, "get", "", "application/json");
+            var json = JSON.parse(request);
 
-            return request;
+            return json.LiveOffset;
         }
         else {
             return null;
