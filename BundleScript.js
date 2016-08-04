@@ -27,8 +27,6 @@ handlers.getManifest = function (args) {
             return 0;
         });
 
-        return manifests;
-
         if (manifests.length > 0)
             return manifests[manifests.length - 1];
         else
