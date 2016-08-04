@@ -12,8 +12,11 @@ handlers.getManifest = function (args) {
     });
 
     if (internalData.Data.hasOwnProperty(key)) {
-        var manifests = JSON.parse(internalData.Data[key]).Manifests.filter(function (manifest) {
-            return manifest.ClientVersion == clientVersion;
+        var internalData = JSON.parse(internalData.Data[key]);
+        var liveOffset = internalData.LiveOffset;
+
+        var manifests = internalData.Manifests.filter(function (manifest) {
+            return manifest.ClientVersion == clientVersion && manifest.CreatedTimestamp + liveOffset <= Date.now();
         });
 
         manifests.sort(function (a, b) {
@@ -28,8 +31,5 @@ handlers.getManifest = function (args) {
             return manifests[manifests.length - 1];
         else
             return null;
-        // manifests.some(function (manifest, i, array) {
-        //
-        // })
     }
 };
