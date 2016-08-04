@@ -4,11 +4,29 @@
 
 
 handlers.getManifest = function (args) {
+    var key = "AssetBundles";
     var clientVersion = args.ClientVersion;
 
     var internalData = server.GetTitleInternalData({
-        Keys: ["AssetBundles"]
+        Keys: [key]
     });
 
-    return internalData;
+
+    if (internalData.Data.hasOwnProperty(key)) {
+        var manifests = JSON.parse(internalData.Data[key]).Manifests;
+
+        manifests.sort(function (a, b) {
+            if (a.Revision > b.Revision)
+                return 1;
+            if (a.Revision < b.Revision)
+                return -1;
+            return 0;
+        });
+
+        return manifests;
+
+        // manifests.some(function (manifest, i, array) {
+        //
+        // })
+    }
 };
