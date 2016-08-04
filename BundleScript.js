@@ -33,7 +33,7 @@ handlers.getManifest = function (args) {
             var url = server.GetContentDownloadUrl({
                 Key: manifestKey,
                 ThruCDN: false
-            });
+            }).URL;
 
             return url;
         }
