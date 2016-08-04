@@ -35,7 +35,8 @@ handlers.getManifest = function (args) {
                 ThruCDN: false
             }).URL;
 
-            return url;
+            var request = http.request(url);
+            return request;
         }
         else {
             return null;
