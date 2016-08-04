@@ -35,7 +35,8 @@ handlers.getManifest = function (args) {
                 ThruCDN: false
             }).URL;
 
-            var request = http.request(url);
+            var request = http.request(url, "get", "", "application/octet-stream");
+
             return request;
         }
         else {
