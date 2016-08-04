@@ -11,9 +11,10 @@ handlers.getManifest = function (args) {
         Keys: [key]
     });
 
-
     if (internalData.Data.hasOwnProperty(key)) {
-        var manifests = JSON.parse(internalData.Data[key]).Manifests;
+        var manifests = JSON.parse(internalData.Data[key]).Manifests.filter(function (manifest) {
+            return manifest.ClientVersion == clientVersion;
+        });
 
         manifests.sort(function (a, b) {
             if (a.Revision > b.Revision)
