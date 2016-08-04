@@ -11,7 +11,7 @@ handlers.getManifest = function (args) {
     });
 
     if (internalData.Data.hasOwnProperty(key)) {
-        var internalData = JSON.parse(internalData.Data[key]);
+        internalData = JSON.parse(internalData.Data[key]);
         var liveOffset = internalData.LiveOffset;
 
         var manifests = internalData.Manifests.filter(function (manifest) {
