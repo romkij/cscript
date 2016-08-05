@@ -11,6 +11,8 @@ handlers.getManifest = function (args) {
         Keys: [key]
     });
 
+    return internalData;
+
     if (internalData.Data.hasOwnProperty(key)) {
         internalData = JSON.parse(internalData.Data[key]);
         var currentTimestamp = currentTimeInSeconds();
