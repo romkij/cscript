@@ -6,6 +6,7 @@ handlers.getManifest = function (args) {
     var key = "AssetBundles";
     var clientVersion = args.ClientVersion;
     var isDebug = args.IsDebug;
+    var platform = args.Platform;
 
     var internalData = server.GetTitleInternalData({
         Keys: [key]
@@ -16,6 +17,9 @@ handlers.getManifest = function (args) {
         var currentTimestamp = currentTimeInSeconds();
 
         var manifests = internalData.Manifests.filter(function (manifest) {
+            if (manifest.Platform != platform)
+                return false;
+
             if (isDebug) {
                 return manifest.ClientVersion == clientVersion;
             }
