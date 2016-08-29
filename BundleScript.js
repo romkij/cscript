@@ -38,7 +38,7 @@ handlers.getManifest = function (args) {
 
         if (manifests.length > 0) {
             var manifest = manifests[manifests.length - 1];
-            var manifestKey = internalData.TemplatePath.replace('%client_version%', clientVersion).replace('%revision%', manifest.Revision);
+            var manifestKey = internalData.TemplatePath.replace('%client_version%', clientVersion).replace('%platform%', platform).replace('%revision%', manifest.Revision);
 
             var url = server.GetContentDownloadUrl({
                 Key: manifestKey,
