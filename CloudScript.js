@@ -25,7 +25,7 @@ handlers.newUserActionn = function (args) {
     var characters = server.GetAllUsersCharacters({
         PlayFabId: currentPlayerId
     });
-
+    characters = characters.Characters;
 
     if (characters != null && characters.length > 0) {
         var glun = characters.filter(function (character) {
