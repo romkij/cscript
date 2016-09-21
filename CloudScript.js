@@ -26,7 +26,6 @@ handlers.newUserActionn = function (args) {
         PlayFabId: currentPlayerId
     });
 
-    return characters;
 
     if (characters != null && characters.length > 0) {
         var glun = characters.filter(function (character) {
