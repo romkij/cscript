@@ -1,21 +1,4 @@
-handlers.newUserAction = function(args) {
-    var SettingsKey = "Settings";
-
-    var titleData = getTitleData(SettingsKey);
-
-    var startDragon = titleData.StartDragon;
-
-
-    var result = server.GrantCharacterToUser({
-        PlayFabId: currentPlayerId,
-        CharacterName: startDragon.CharacterName,
-        CharacterType: startDragon.CharacterType
-    });
-
-    return result;
-};
-
-handlers.newUserActionn = function (args) {
+handlers.newUserAction = function (args) {
     var SettingsKey = "Settings";
 
     var titleData = getTitleData(SettingsKey);
