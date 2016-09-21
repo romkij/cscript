@@ -15,8 +15,8 @@ handlers.newUserAction = function(args) {
         return character.CharacterType == startDragon.CharacterType;
     });
 
-    if (glun != null) {
-        return glun;
+    if (glun.length > 0) {
+        return glun[0];
     }
     else {
         var result = server.GrantCharacterToUser({
