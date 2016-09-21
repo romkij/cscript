@@ -5,13 +5,28 @@ handlers.newUserAction = function(args) {
 
     var startDragon = titleData.StartDragon;
 
-	var result = server.GrantCharacterToUser({
-		PlayFabId : currentPlayerId,
-		CharacterName : startDragon.CharacterName,
-		CharacterType: startDragon.CharacterType
-	});
-	
-	return result;
+    var characters = server.GetAllUsersCharacters({
+        PlayFabId: currentPlayerId
+    });
+
+    characters = JSON.parse(characters.Characters);
+
+    var glun = characters.filter(function (character) {
+        return character.CharacterType == startDragon.CharacterType;
+    });
+
+    if (glun != null) {
+        return glun;
+    }
+    else {
+        var result = server.GrantCharacterToUser({
+            PlayFabId: currentPlayerId,
+            CharacterName: startDragon.CharacterName,
+            CharacterType: startDragon.CharacterType
+        });
+
+        return result;
+    }
 };
 
 handlers.grantUserItems = function(args) {
