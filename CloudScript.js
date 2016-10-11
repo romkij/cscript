@@ -41,7 +41,7 @@ handlers.grantUserItems = function(args) {
 
 	var result = server.GrantItemsToUser({
 		PlayFabId : currentPlayerId,
-        ItemIds: JSON.parse(data.ItemIds)
+        ItemIds: JSON.parse(data)
 	});
     return getHashedResult(result.ItemGrantResults);
 };
