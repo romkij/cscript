@@ -2,7 +2,7 @@ handlers.newUserAction = function (args) {
     var SettingsKey = "Settings";
 
     if (!isValid(args.Data, args.Hash))
-        log.debug('HASH INVALID!');
+        log.debug({Data: args.Data});
     var titleData = getTitleData(SettingsKey);
 
     var startDragon = titleData.StartDragon;
