@@ -40,8 +40,11 @@ handlers.grantUserItems = function(args) {
 };
 
 handlers.processDaily = function (args) {
+
     var DailyKey = "Daily";
+
     var settings = getTitleData(DailyKey);
+
     var realDate = new Date();
     var requestTimestamp = currentTimeInSeconds();
 
@@ -58,6 +61,18 @@ handlers.processDaily = function (args) {
         PlayFabId: currentPlayerId,
         Keys: [DailyKey]
     });
+
+    return {
+        Data: args.Data,
+        Hash: getHash(args.Data)
+    };
+    // return args.Data;
+
+    //
+    // log.debug(args.Data);
+    //
+    // return getHash(args.Data);
+    //
 
     if (!isValid(args.Data, args.Hash))
         userClientData.IsCheater = true;
