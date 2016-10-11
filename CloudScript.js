@@ -41,7 +41,6 @@ handlers.grantUserItems = function(args) {
 		PlayFabId : currentPlayerId,
         ItemIds: data.ItemIds
 	});
-
     return getHashedResult(result.ItemGrantResults);
 };
 
