@@ -57,16 +57,14 @@ function getCalculationTypeByFullName(fullName, statInfo) {
     }
 }
 
-
 function Contains(a, b) {
     return a.indexOf(b) >= 0;
 }
 
 function isValid(data, hash) {
-    var json = JSON.stringify(data);
+    return hash === getHash(data);
+}
 
-    var words = CryptoJS.HmacMD5(JSON.stringify(args.data), currentPlayerId);
-    var hash = CryptoJS.enc.Base64.stringify(words);
-
-    return hash === args.hash;
+function getHash(data) {
+    return CryptoJS.enc.Base64.stringify(CryptoJS.HmacMD5(JSON.stringify(data), currentPlayerId));
 }
