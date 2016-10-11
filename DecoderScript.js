@@ -4,5 +4,5 @@
 
 handlers.testEncryption = function (args) {
     //return m;
-    return args.CustomData;
+    return args;
 };
