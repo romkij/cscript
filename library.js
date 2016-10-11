@@ -57,6 +57,7 @@ function getCalculationTypeByFullName(fullName, statInfo) {
     }
 }
 
+
 function Contains(a, b) {
     return a.indexOf(b) >= 0;
 }
