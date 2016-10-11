@@ -70,8 +70,8 @@ function getHash(data) {
 }
 
 function getHashedResult(data) {
-    return {
-        Data: JSON.stringify(data),
+    return JSON.stringify({
+        Data: data,
         Hash: getHash(data)
-    };
+    });
 }
