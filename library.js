@@ -68,3 +68,10 @@ function isValid(data, hash) {
 function getHash(data) {
     return CryptoJS.enc.Base64.stringify(CryptoJS.HmacMD5(JSON.stringify(data), currentPlayerId));
 }
+
+function getHashedResult(data) {
+    return {
+        Data: data,
+        Hash: getHash(data)
+    }
+}
