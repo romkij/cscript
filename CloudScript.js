@@ -16,7 +16,7 @@ handlers.newUserAction = function (args) {
         });
 
         if (glun != null && glun.length > 0) {
-            return glun;
+            return getHashedResult(glun);
         }
     }
     else {
@@ -26,7 +26,7 @@ handlers.newUserAction = function (args) {
             CharacterType: startDragon.CharacterType
         });
 
-        return result;
+        return getHashedResult(result);
     }
 };
 
