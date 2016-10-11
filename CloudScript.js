@@ -62,7 +62,7 @@ handlers.processDaily = function (args) {
         Keys: [DailyKey]
     });
 
-    return args.Data;
+    // return args.Data;
 
     //
     // log.debug(args.Data);
