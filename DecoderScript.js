@@ -4,5 +4,5 @@
 
 handlers.testEncryption = function (args) {
     // var data = Base64.encode()args.data
-    return "valera mat' ego".toBase64();
+    return Base64.encode("valera");
 };
