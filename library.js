@@ -73,5 +73,5 @@ function getHashedResult(data) {
     return {
         Data: data,
         Hash: getHash(data)
-    }
+    };
 }
