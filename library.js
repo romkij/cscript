@@ -66,18 +66,10 @@ function isValid(data, hash) {
 }
 
 function getHash(data) {
-
-    // log.debug(JSON.stringify(data));
     if (typeof data !== 'string') {
         data = JSON.stringify(data);
-        // this is a string
     }
-
-    var word = CryptoJS.HmacMD5(data, currentPlayerId);
-    var hash = CryptoJS.enc.Base64.stringify(word);
-    // log.debug(JSON.stringify(data));
-
-    return hash;
+    return CryptoJS.enc.Base64.stringify(CryptoJS.HmacMD5(data, currentPlayerId));
 }
 
 function getHashedResult(data) {
