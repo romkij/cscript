@@ -70,9 +70,13 @@ function getHash(data) {
         data = JSON.stringify(data);
     }
 
-    log.debug(data);
+    var hash = CryptoJS.enc.Base64.stringify(CryptoJS.HmacMD5(data, currentPlayerId));
+    log.debug({
+        Data: data,
+        Hash: hash
+    });
 
-    return CryptoJS.enc.Base64.stringify(CryptoJS.HmacMD5(data, currentPlayerId));
+    return hash;
 }
 
 function getHashedResult(data) {

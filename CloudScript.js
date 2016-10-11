@@ -37,11 +37,11 @@ handlers.grantUserItems = function(args) {
     if (!isValid(data, hash))
         return getHashedResult(null);
 
-    log.debug(JSON.parse(data.ItemIds.ItemIds));
+    // log.debug(JSON.parse(data.ItemIds.));
 
 	var result = server.GrantItemsToUser({
 		PlayFabId : currentPlayerId,
-        ItemIds: data
+        ItemIds: JSON.parse(data.ItemIds)
 	});
     return getHashedResult(result.ItemGrantResults);
 };
