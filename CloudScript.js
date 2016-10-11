@@ -63,6 +63,9 @@ handlers.processDaily = function (args) {
     });
 
 
+    return getHash(args.Data);
+
+
     if (!isValid(args.Data, args.Hash))
         userClientData.IsCheater = true;
 
