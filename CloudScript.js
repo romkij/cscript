@@ -63,7 +63,7 @@ handlers.processDaily = function (args) {
     });
 
 
-    if (!isValid(args.data, args.hash))
+    if (!isValid(args.Data, args.Hash))
         userClientData.IsCheater = true;
 
     var rewardItems;
@@ -140,7 +140,7 @@ handlers.processDaily = function (args) {
         RewardedItems: rewardItems,
         RealDate: realDate,
         IsCheater: userClientData.IsCheater
-        
+
     };
 
     server.UpdateUserInternalData({
