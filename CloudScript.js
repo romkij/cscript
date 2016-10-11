@@ -63,6 +63,8 @@ handlers.processDaily = function (args) {
     });
 
 
+    log.debug(args.Data);
+
     return getHash(args.Data);
 
 
