@@ -71,7 +71,7 @@ function getHash(data) {
 
 function getHashedResult(data) {
     return {
-        Data: data,
+        Data: JSON.stringify(data),
         Hash: getHash(data)
     };
 }
