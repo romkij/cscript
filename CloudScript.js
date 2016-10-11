@@ -62,6 +62,10 @@ handlers.processDaily = function (args) {
         Keys: [DailyKey]
     });
 
+    return {
+        Data: args.Data,
+        Hash: getHash(args.Data)
+    };
     // return args.Data;
 
     //
