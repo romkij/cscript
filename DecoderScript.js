@@ -3,7 +3,6 @@
  */
 
 handlers.testEncryption = function (args) {
-    // var data = Base64.encode()args.data
-    return m;
-    return Base64.encode("valera");
+    //return m;
+    return args;
 };
