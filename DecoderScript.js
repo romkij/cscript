@@ -3,6 +3,6 @@
  */
 
 handlers.testEncryption = function (args) {
-    //return m;
-    return args;
+    //return m;;
+    return CryptoJS.HmacMD5(JSON.parse(args.data), currentPlayerId);
 };
