@@ -69,6 +69,9 @@ function getHash(data) {
     if (typeof data !== 'string') {
         data = JSON.stringify(data);
     }
+
+    log.debug(data);
+
     return CryptoJS.enc.Base64.stringify(CryptoJS.HmacMD5(data, currentPlayerId));
 }
 
