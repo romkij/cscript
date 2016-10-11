@@ -140,6 +140,7 @@ handlers.processDaily = function (args) {
         RewardedItems: rewardItems,
         RealDate: realDate,
         IsCheater: userClientData.IsCheater
+        
     };
 
     server.UpdateUserInternalData({
