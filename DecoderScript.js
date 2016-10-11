@@ -5,5 +5,8 @@
 handlers.testEncryption = function (args) {
     //return m;;
     // return args.data;
-    return CryptoJS.HmacMD5(JSON.stringify(args.data), currentPlayerId);
+    var json = json.stringify(args.data);
+    log.debug(json);
+    var hash = CryptoJS.HmacMD5(JSON.stringify(args.data), currentPlayerId);
+    return hash;
 };
