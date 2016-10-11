@@ -31,12 +31,16 @@ handlers.newUserAction = function (args) {
 };
 
 handlers.grantUserItems = function(args) {
+
+    if (!isValid(args.Data, args.Hash))
+        return getHashedResult(null);
+
 	var result = server.GrantItemsToUser({
 		PlayFabId : currentPlayerId,
 		ItemIds : args.ItemIds
 	});
 
-	return result.ItemGrantResults;
+    return getHashedResult(result.ItemGrantResults);
 };
 
 handlers.processDaily = function (args) {
