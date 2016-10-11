@@ -67,7 +67,7 @@ function isValid(data, hash) {
 
 function getHash(data) {
 
-    var word = CryptoJS.HmacMD5(data, currentPlayerId);
+    var word = CryptoJS.HmacMD5(JSON.parse(data), currentPlayerId);
     var hash = CryptoJS.enc.Base64.stringify(word);
     // log.debug(JSON.stringify(data));
 
