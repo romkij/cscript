@@ -69,7 +69,7 @@ function getHash(data) {
 
     var word = CryptoJS.HmacMD5(JSON.stringify(data), currentPlayerId);
     var hash = CryptoJS.enc.Base64.stringify(word);
-    log.debug(JSON.stringify(data));
+    // log.debug(JSON.stringify(data));
 
     return hash;
 }

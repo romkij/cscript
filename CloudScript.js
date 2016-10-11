@@ -62,11 +62,11 @@ handlers.processDaily = function (args) {
         Keys: [DailyKey]
     });
 
-
-    log.debug(args.Data);
-
-    return getHash(args.Data);
-
+    //
+    // log.debug(args.Data);
+    //
+    // return getHash(args.Data);
+    //
 
     if (!isValid(args.Data, args.Hash))
         userClientData.IsCheater = true;
