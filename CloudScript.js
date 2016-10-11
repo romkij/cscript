@@ -31,13 +31,15 @@ handlers.newUserAction = function (args) {
 };
 
 handlers.grantUserItems = function(args) {
+    var data = args.Data;
+    var hash = args.Hash;
 
-    if (!isValid(args.Data, args.Hash))
+    if (!isValid(data, hash))
         return getHashedResult(null);
 
 	var result = server.GrantItemsToUser({
 		PlayFabId : currentPlayerId,
-		ItemIds : args.ItemIds
+        ItemIds: data.ItemIds
 	});
 
     return getHashedResult(result.ItemGrantResults);
