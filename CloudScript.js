@@ -40,7 +40,7 @@ function checkTimestamp(action, timestamp) {
 
     data = JSON.parse(data.Data[SECURITY_KEY].Value);
 
-    return data;
+    return data[action];
 }
 
 function saveTimestamp(action, timestamp) {
@@ -56,8 +56,8 @@ function saveTimestamp(action, timestamp) {
 
 handlers.test = function (args) {
     var tm = checkTimestamp('test');
-    action = 'test';
-    return tm[action];
+    // action = 'test';
+    return tm;
 };
 
 handlers.grantUserItems = function(args) {
