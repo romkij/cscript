@@ -88,10 +88,12 @@ function getHashedResult(data) {
 }
 
 function checkTimestamp(action, clientTimestamp) {
+
     var SECURITY_KEY = "Security";
+
     var data = server.GetUserInternalData({
         PlayFabId: currentPlayerId,
-        Keys: [SECURITY_KEY]
+        Keys: ["Security"]
     });
 
     if (data.Data.hasOwnProperty(SECURITY_KEY)) {
