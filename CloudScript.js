@@ -1,4 +1,3 @@
-var SECURITY_KEY = "Security";
 
 handlers.newUserAction = function (args) {
     var SettingsKey = "Settings";
