@@ -56,7 +56,7 @@ function saveTimestamp(action, timestamp) {
 
 handlers.test = function (args) {
 
-    return checkTimestamp('test');
+    return checkTimestamp('test')['test'];
 };
 
 handlers.grantUserItems = function(args) {
