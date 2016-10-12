@@ -2,9 +2,7 @@ var SECURITY_KEY = "Security";
 
 handlers.newUserAction = function (args) {
     var SettingsKey = "Settings";
-
     var titleData = getTitleData(SettingsKey);
-
     var startDragon = titleData.StartDragon;
 
     var characters = server.GetAllUsersCharacters({
@@ -32,31 +30,8 @@ handlers.newUserAction = function (args) {
     }
 };
 
-function checkTimestamp(action, timestamp) {
-    var data = server.GetUserInternalData({
-        PlayFabId: currentPlayerId,
-        Keys: [SECURITY_KEY]
-    });
-
-    data = JSON.parse(data.Data[SECURITY_KEY].Value);
-
-    return data[action];
-}
-
-function saveTimestamp(action, timestamp) {
-
-    server.UpdateUserInternalData({
-        PlayFabId: currentPlayerId,
-        Data: {
-            "Daily": JSON.stringify(userServerData),
-            "IsCheater": JSON.stringify(userClientData.IsCheater)
-        }
-    });
-}
-
 handlers.test = function (args) {
     var tm = checkTimestamp('test');
-    // action = 'test';
     return tm;
 };
 

@@ -71,6 +71,7 @@ function getHash(data) {
     }
 
     var hash = CryptoJS.enc.Base64.stringify(CryptoJS.HmacMD5(data, currentPlayerId));
+
     log.debug({
         Data: data,
         Hash: hash
@@ -84,4 +85,39 @@ function getHashedResult(data) {
         Data: JSON.stringify(data),
         Hash: getHash(data)
     };
+}
+
+function checkTimestamp(action, clientTimestamp) {
+    var data = server.GetUserInternalData({
+        PlayFabId: currentPlayerId,
+        Keys: [SECURITY_KEY]
+    });
+
+    if (data.Data.hasOwnProperty(SECURITY_KEY)) {
+        data = JSON.parse(data.Data[SECURITY_KEY].Value);
+
+        if (data.hasOwnProperty(action)) {
+            var serverTimestamp = data[action];
+
+            if (clientTimestamp > serverTimestamp) {
+                data[action] = clientTimestamp;
+            }
+        }
+        else {
+            data[action] = clientTimestamp;
+        }
+    }
+    else {
+        var newData = {};
+        newData[action] = clientTimestamp;
+    }
+
+    server.UpdateUserInternalData({
+        PlayFabId: currentPlayerId,
+        Data: {
+            "Security": JSON.stringify(data)
+        }
+    });
+
+    return data[action] === clientTimestamp;
 }
