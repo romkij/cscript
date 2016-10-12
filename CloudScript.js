@@ -1,3 +1,5 @@
+var SECURITY_KEY = "Security";
+
 handlers.newUserAction = function (args) {
     var SettingsKey = "Settings";
 
@@ -30,9 +32,41 @@ handlers.newUserAction = function (args) {
     }
 };
 
+function checkTimestamp(action, timestamp) {
+    var data = server.GetUserInternalData({
+        PlayFabId: currentPlayerId,
+        Keys: [SECURITY_KEY]
+    });
+
+    data = JSON.parse(data.Data[SECURITY_KEY].Value);
+
+    return data;
+}
+
+function saveTimestamp(action, timestamp) {
+
+    server.UpdateUserInternalData({
+        PlayFabId: currentPlayerId,
+        Data: {
+            "Daily": JSON.stringify(userServerData),
+            "IsCheater": JSON.stringify(userClientData.IsCheater)
+        }
+    });
+}
+
+handlers.test = function (args) {
+
+    return checkTimestamp('test');
+};
+
 handlers.grantUserItems = function(args) {
+    var action = "grantUserItems";
+
     var data = args.Data;
     var hash = args.Hash;
+    var timestamp = args.Timestamp;
+
+    checkTimestamp();
 
     if (!isValid(data, hash))
         return getHashedResult(null);
@@ -44,6 +78,7 @@ handlers.grantUserItems = function(args) {
 		PlayFabId : currentPlayerId,
         ItemIds: data.ItemIds
 	});
+
     return getHashedResult(result.ItemGrantResults);
 };
 
