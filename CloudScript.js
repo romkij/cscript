@@ -38,7 +38,7 @@ function checkTimestamp(action, timestamp) {
         Keys: [SECURITY_KEY]
     });
 
-    data = JSON.parse(data.Data[SECURITY_KEY].Value);
+    data = data.Data[SECURITY_KEY].Value;
 
     return data;
 }
