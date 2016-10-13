@@ -128,6 +128,8 @@ function checkTimestamp(action, clientTimestamp) {
     else {
         var newData = {};
         newData[action] = clientTimestamp;
+
+        return action;
         data = newData;
         result = true;
     }
