@@ -127,24 +127,11 @@ function checkTimestamp(action, clientTimestamp) {
     }
     else {
 
-        data = {
-            action: 12
-        };
-        log.debug({
-            timestamp: clientTimestamp
-        });
-        data.action = clientTimestamp;
+        data = {};
 
-
-        //
-        // newData.push({
-        //     action: action,
-        //     value: clientTimestamp
-        // });
+        data[action] = clientTimestamp;
 
         log.debug(data);
-        // return action;
-        // data = newData;
         result = true;
     }
     //
