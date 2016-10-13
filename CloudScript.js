@@ -30,8 +30,10 @@ handlers.newUserAction = function (args) {
 };
 
 handlers.test = function (args) {
-    var tm = checkTimestamp("test", args.timestamp);
-    return tm;
+    // var tm = checkTimestamp("test", args.timestamp);
+
+
+    return getHashedResult(null);
 };
 
 handlers.grantUserItems = function(args) {
