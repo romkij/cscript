@@ -62,6 +62,7 @@ function Contains(a, b) {
 }
 
 function isValid(action, message) {
+
     var data = message.Data;
     var hash = message.Hash;
 
