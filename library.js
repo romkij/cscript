@@ -97,11 +97,6 @@ function getHashedResult(data) {
 
 function checkTimestamp(action, clientTimestamp) {
 
-    log.debug({
-        action: action,
-        timestamp: clientTimestamp
-    });
-
     var serverTimestamp = 0;
     var SECURITY_KEY = "Security";
 
@@ -123,6 +118,12 @@ function checkTimestamp(action, clientTimestamp) {
     } else {
         data = {};
     }
+
+    //
+    log.debug({
+        serverTimestamp: serverTimestamp,
+        clientTimestamp: clientTimestamp
+    });
 
     if (clientTimestamp > serverTimestamp) {
         log.debug("Is valid");
