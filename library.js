@@ -129,7 +129,8 @@ function checkTimestamp(action, clientTimestamp) {
         var newData = {};
         newData[action] = clientTimestamp;
 
-        return action;
+        log.debug(newData);
+        // return action;
         data = newData;
         result = true;
     }
