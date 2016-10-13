@@ -73,7 +73,8 @@ function isValid(action, message) {
 
     log.debug({
         clientHash: hash,
-        serverHash: hashfrompayload
+        serverHash: hashfrompayload,
+        data: JSON.stringify(data)
     });
 
     return isHashValid(data, hash) && checkTimestamp(action, timestamp);
