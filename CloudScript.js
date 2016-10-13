@@ -32,9 +32,9 @@ handlers.newUserAction = function (args) {
 
 handlers.test = function (args) {
     if (isValid("test", args)) {
-        return "is valid";
+        return getHashedResult("valid");
     } else {
-        return "spoofing";
+        return getHashedResult("spoofing");
     }
 
 

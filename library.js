@@ -79,11 +79,11 @@ function getHash(data) {
     }
 
     var hash = CryptoJS.enc.Base64.stringify(CryptoJS.HmacMD5(data, currentPlayerId));
-
-    log.debug({
-        Data: data,
-        Hash: hash
-    });
+    //
+    // log.debug({
+    //     Data: data,
+    //     Hash: hash
+    // });
 
     return hash;
 }
