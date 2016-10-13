@@ -91,15 +91,16 @@ function getHashedResult(data) {
         Timestamp: currentTimeInSeconds()
     };
 
-    preparedData = JSON.stringify(preparedData);
-
-    return {
+    var result = {
         Data: {
             Payload: JSON.stringify(data),
             Timestamp: currentTimeInSeconds()
-        },
-        Hash: getHash(preparedData)
+        }
     };
+
+    result.Hash = getHash(result.data);
+
+    return result;
 }
 
 function checkTimestamp(action, clientTimestamp) {
