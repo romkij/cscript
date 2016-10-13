@@ -129,6 +129,9 @@ function checkTimestamp(action, clientTimestamp) {
 
         data = {};
         data[action] = clientTimestamp;
+
+        log.debug(action);
+
         //
         // newData.push({
         //     action: action,
