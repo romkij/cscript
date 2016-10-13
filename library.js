@@ -65,7 +65,6 @@ function isValid(action, message) {
     var data = message.Data;
     var hash = message.Hash;
 
-    log.debug(message);
     log.debug(data);
 
     var timestamp = JSON.parse(data).Timestamp;
