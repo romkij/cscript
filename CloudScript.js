@@ -157,8 +157,7 @@ handlers.processDaily = function (args) {
     server.UpdateUserInternalData({
         PlayFabId: currentPlayerId,
         Data: {
-            "Daily": JSON.stringify(userServerData),
-            "IsCheater": JSON.stringify(userClientData.IsCheater)
+            "Daily": JSON.stringify(userServerData)
         }
     });
 
