@@ -58,7 +58,6 @@ handlers.processDaily = function (args) {
     var status = isValid("processDaily", args);
 
     var data = JSON.parse(args.Data.Payload);
-
     var DailyKey = "Daily";
     var settings = getTitleData(DailyKey);
     var realDate = new Date();
