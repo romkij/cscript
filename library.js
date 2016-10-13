@@ -126,8 +126,12 @@ function checkTimestamp(action, clientTimestamp) {
         }
     }
     else {
-        var newData = {};
-        newData[action] = clientTimestamp;
+        var newData = [];
+
+        newData.push({
+            key: action,
+            value: clientTimestamp
+        });
 
         log.debug(newData);
         // return action;
