@@ -55,7 +55,6 @@ handlers.grantUserItems = function(args) {
 };
 
 handlers.processDaily = function (args) {
-    args = JSON.parse(args);
     var status = isValid("processDaily", args);
 
     var data = JSON.parse(args.Data.Payload);
