@@ -44,7 +44,6 @@ handlers.grantUserItems = function(args) {
     }
 
     var data = JSON.parse(args.Data.Payload);
-    // log.debug(JSON.parse(data.ItemIds.));
 
 	var result = server.GrantItemsToUser({
 		PlayFabId : currentPlayerId,
