@@ -90,7 +90,7 @@ handlers.processDaily = function (args) {
             CurrentProgress: 0,
             DeadlineTimestamp: requestTimestamp + settings.Timeout,
             NextRequestTimestamp: requestTimestamp + (settings.Timeout * 2),
-            IsCheater: (userClientData.IsCheater || status)
+            IsCheater: (userClientData.IsCheater || !status)
         };
     }
     else {
