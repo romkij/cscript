@@ -92,7 +92,7 @@ function getHash(data) {
 
 function getHashedResult(data) {
     var preparedData = {
-        Payload: data,
+        Payload: JSON.stringify(data),
         Timestamp: currentTimeInSeconds()
     };
     return {
