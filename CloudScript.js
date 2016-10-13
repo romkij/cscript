@@ -36,8 +36,6 @@ handlers.test = function (args) {
     } else {
         return getHashedResult("spoofing");
     }
-
-
 };
 
 handlers.grantUserItems = function(args) {
