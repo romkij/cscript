@@ -33,7 +33,7 @@ handlers.test = function (args) {
     // var tm = checkTimestamp("test", args.timestamp);
 
 
-    return getHashedResult(null);
+    return getHashedResult();
 };
 
 handlers.grantUserItems = function(args) {
