@@ -61,7 +61,15 @@ function Contains(a, b) {
     return a.indexOf(b) >= 0;
 }
 
-function isValid(data, hash) {
+function isValid(action, message) {
+    var data = message.Data;
+    var hash = message.Hash;
+    var timestamp = data.Timestamp;
+
+    return isHashValid(data.Payload, hash) && checkTimestamp(action, timestamp);
+}
+
+function isHashValid(data, hash) {
     return hash === getHash(data);
 }
 

@@ -7,6 +7,7 @@ handlers.newUserAction = function (args) {
     var characters = server.GetAllUsersCharacters({
         PlayFabId: currentPlayerId
     });
+
     characters = characters.Characters;
 
     if (characters != null && characters.length > 0) {
@@ -30,25 +31,21 @@ handlers.newUserAction = function (args) {
 };
 
 handlers.test = function (args) {
-    // var tm = checkTimestamp("test", args.timestamp);
+    if (isValid(action, args)) {
+        return "is valid";
+    } else {
+        return "spoofing";
+    }
 
 
-    return getHashedResult();
 };
 
 handlers.grantUserItems = function(args) {
-    var action = "grantUserItems";
+    if (!isValid("grantUserItems", args)) {
+        return getHashedResult();
+    }
 
-    var data = args.Data;
-    var hash = args.Hash;
-    var timestamp = args.Timestamp;
-
-    checkTimestamp();
-
-    if (!isValid(data, hash))
-        return getHashedResult(null);
-
-    data = JSON.parse(data);
+    var data = JSON.parse(args.Data.Payload);
     // log.debug(JSON.parse(data.ItemIds.));
 
 	var result = server.GrantItemsToUser({
@@ -60,18 +57,22 @@ handlers.grantUserItems = function(args) {
 };
 
 handlers.processDaily = function (args) {
+    var isValid = isValid("processDaily", args);
+
+    var data = JSON.parse(args.Data.Payload);
+
     var DailyKey = "Daily";
     var settings = getTitleData(DailyKey);
     var realDate = new Date();
     var requestTimestamp = currentTimeInSeconds();
 
     var userClientData = {
-        WeekId: args.WeekId,
-        IsNeedReward: args.IsNeedReward,
-        CurrentDay: args.CurrentDay,
-        CompletedDays: args.CompletedDays,
-        CurrentProgress: args.CurrentProgress,
-        IsCheater: args.IsCheater
+        WeekId: data.WeekId,
+        IsNeedReward: data.IsNeedReward,
+        CurrentDay: data.CurrentDay,
+        CompletedDays: data.CompletedDays,
+        CurrentProgress: data.CurrentProgress,
+        IsCheater: data.IsCheater
     };
 
     var userServerData = server.GetUserInternalData({
@@ -79,7 +80,7 @@ handlers.processDaily = function (args) {
         Keys: [DailyKey]
     });
 
-    if (!isValid(args.Data, args.Hash))
+    if (!isValid)
         userClientData.IsCheater = true;
 
     var rewardItems;
