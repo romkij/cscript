@@ -116,6 +116,7 @@ function checkTimestamp(action, clientTimestamp) {
     else {
         var newData = {};
         newData[action] = clientTimestamp;
+        data = newData;
         result = true;
     }
 
