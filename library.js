@@ -67,7 +67,7 @@ function isValid(action, message) {
 
     log.debug(data);
 
-    var timestamp = JSON.parse(data).Timestamp;
+    var timestamp = data.Timestamp;
 
     return isHashValid(data, hash) && checkTimestamp(action, timestamp);
 }
