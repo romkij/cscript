@@ -30,7 +30,7 @@ handlers.newUserAction = function (args) {
 };
 
 handlers.test = function (args) {
-    var tm = checkTimestamp("test", 192012);
+    var tm = checkTimestamp("test", args.timestamp);
     return tm;
 };
 
