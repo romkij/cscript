@@ -104,6 +104,12 @@ function getHashedResult(data) {
 }
 
 function checkTimestamp(action, clientTimestamp) {
+
+    log.debug({
+        action: action,
+        timestamp: clientTimestamp
+    });
+
     var serverTimestamp = 0;
     var SECURITY_KEY = "Security";
 
@@ -117,12 +123,17 @@ function checkTimestamp(action, clientTimestamp) {
         if (data.hasOwnProperty(action)) {
             serverTimestamp = parseInt(data[action]);
             clientTimestamp = parseInt(clientTimestamp);
+            log.debug({
+                server: serverTimestamp,
+                client: clientTimestamp
+            });
         }
     } else {
         data = {};
     }
 
     if (clientTimestamp > serverTimestamp) {
+        log.debug("Is valid");
         data[action] = clientTimestamp;
         server.UpdateUserInternalData({
             PlayFabId: currentPlayerId,
@@ -132,6 +143,7 @@ function checkTimestamp(action, clientTimestamp) {
         });
     } else {
         data[action] = serverTimestamp;
+        log.debug('Is not valid');
     }
 
     return data[action] != serverTimestamp;
