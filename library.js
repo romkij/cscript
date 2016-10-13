@@ -128,19 +128,16 @@ function checkTimestamp(action, clientTimestamp) {
     else {
 
         data = {};
-
         data[action] = clientTimestamp;
-
-        log.debug(data);
         result = true;
     }
-    //
-    // server.UpdateUserInternalData({
-    //     PlayFabId: currentPlayerId,
-    //     Data: {
-    //         "Security": JSON.stringify(data)
-    //     }
-    // });
+
+    server.UpdateUserInternalData({
+        PlayFabId: currentPlayerId,
+        Data: {
+            "Security": JSON.stringify(data)
+        }
+    });
 
     return result;
 }
