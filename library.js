@@ -68,6 +68,14 @@ function isValid(action, message) {
     // log.debug(data);
     var timestamp = data.Timestamp;
 
+    var hashfrompayload = getHash(data);
+
+
+    log.debug({
+        clientHash: hash,
+        serverHash: hashfrompayload
+    });
+
     return isHashValid(data, hash) && checkTimestamp(action, timestamp);
 }
 
