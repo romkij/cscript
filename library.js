@@ -64,19 +64,7 @@ function Contains(a, b) {
 function isValid(action, message) {
     var data = message.Data;
     var hash = message.Hash;
-
-    // log.debug(data);
     var timestamp = data.Timestamp;
-
-    var hashfrompayload = getHash(data);
-
-
-    log.debug({
-        clientHash: hash,
-        serverHash: hashfrompayload,
-        data: JSON.stringify(data)
-    });
-
     return isHashValid(data, hash) && checkTimestamp(action, timestamp);
 }
 
@@ -95,11 +83,6 @@ function getHash(data) {
 }
 
 function getHashedResult(data) {
-    var preparedData = {
-        Payload: data,
-        Timestamp: currentTimeInSeconds()
-    };
-
     var result = {
         Data: {
             Payload: JSON.stringify(data),
