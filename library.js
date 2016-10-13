@@ -81,9 +81,13 @@ function getHash(data) {
 }
 
 function getHashedResult(data) {
+    var preparedData = {
+        Payload: data,
+        Timestamp: currentTimeInSeconds()
+    };
     return {
-        Data: JSON.stringify(data),
-        Hash: getHash(data)
+        Data: JSON.stringify(preparedData),
+        Hash: getHash(preparedData)
     };
 }
 
