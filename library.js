@@ -122,5 +122,5 @@ function checkTimestamp(action, clientTimestamp) {
         }
     });
 
-    return parseInt(data[action]) === parseInt(clientTimestamp);
+    return data[action] == clientTimestamp;
 }
