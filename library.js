@@ -64,7 +64,7 @@ function Contains(a, b) {
 function isValid(action, message) {
     var data = message.Data;
     var hash = message.Hash;
-    var timestamp = data.Timestamp;
+    var timestamp = JSON.parse(data).Timestamp;
 
     return isHashValid(data, hash) && checkTimestamp(action, timestamp);
 }
