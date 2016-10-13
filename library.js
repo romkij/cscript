@@ -126,16 +126,18 @@ function checkTimestamp(action, clientTimestamp) {
         }
     }
     else {
-        var newData = [];
 
-        newData.push({
-            key: action,
-            value: clientTimestamp
-        });
+        data = {};
+        data[action] = clientTimestamp;
+        //
+        // newData.push({
+        //     action: action,
+        //     value: clientTimestamp
+        // });
 
-        log.debug(newData);
+        log.debug(data);
         // return action;
-        data = newData;
+        // data = newData;
         result = true;
     }
 
