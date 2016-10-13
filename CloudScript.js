@@ -31,7 +31,7 @@ handlers.newUserAction = function (args) {
 };
 
 handlers.test = function (args) {
-    if (isValid(action, args)) {
+    if (isValid("test", args)) {
         return "is valid";
     } else {
         return "spoofing";
