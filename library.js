@@ -65,7 +65,7 @@ function isValid(action, message) {
     var data = message.Data;
     var hash = message.Hash;
 
-    log.debug(data);
+    // log.debug(data);
     var timestamp = data.Timestamp;
 
     return isHashValid(data, hash) && checkTimestamp(action, timestamp);
@@ -87,7 +87,7 @@ function getHash(data) {
 
 function getHashedResult(data) {
     var preparedData = {
-        Payload: JSON.stringify(data),
+        Payload: data,
         Timestamp: currentTimeInSeconds()
     };
     return {
