@@ -100,7 +100,7 @@ function getHashedResult(data) {
 }
 
 function checkTimestamp(action, clientTimestamp) {
-
+    var serverTimestamp = 0;
     var SECURITY_KEY = "Security";
 
     var data = server.GetUserInternalData({
@@ -108,38 +108,27 @@ function checkTimestamp(action, clientTimestamp) {
         Keys: ["Security"]
     });
 
-    var result = false;
-
     if (data.Data.hasOwnProperty(SECURITY_KEY)) {
         data = JSON.parse(data.Data[SECURITY_KEY].Value);
-
         if (data.hasOwnProperty(action)) {
-            var serverTimestamp = parseInt(data[action]);
-
-            if (result = (parseInt(clientTimestamp) > serverTimestamp)) {
-                data[action] = clientTimestamp;
-            } else {
-                data[action] = currentTimeInSeconds();
-            }
+            serverTimestamp = parseInt(data[action]);
+            clientTimestamp = parseInt(clientTimestamp);
         }
-        else {
-            data[action] = clientTimestamp;
-            result = true;
-        }
-    }
-    else {
-
+    } else {
         data = {};
-        data[action] = clientTimestamp;
-        result = true;
     }
 
-    server.UpdateUserInternalData({
-        PlayFabId: currentPlayerId,
-        Data: {
-            "Security": JSON.stringify(data)
-        }
-    });
+    if (clientTimestamp > serverTimestamp) {
+        data[action] = clientTimestamp;
+        server.UpdateUserInternalData({
+            PlayFabId: currentPlayerId,
+            Data: {
+                "Security": JSON.stringify(data)
+            }
+        });
+    } else {
+        data[action] = serverTimestamp;
+    }
 
-    return result;
+    return clientTimestamp !== serverTimestamp;
 }
