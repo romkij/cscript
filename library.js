@@ -100,9 +100,9 @@ function checkTimestamp(action, clientTimestamp) {
         data = JSON.parse(data.Data[SECURITY_KEY].Value);
 
         if (data.hasOwnProperty(action)) {
-            var serverTimestamp = data[action];
+            var serverTimestamp = parseInt(data[action]);
 
-            if (clientTimestamp > serverTimestamp) {
+            if (parseInt(clientTimestamp) > serverTimestamp) {
                 data[action] = clientTimestamp;
             }
         }
@@ -122,5 +122,5 @@ function checkTimestamp(action, clientTimestamp) {
         }
     });
 
-    return data[action] === clientTimestamp;
+    return parseInt(data[action]) === parseInt(clientTimestamp);
 }
