@@ -134,5 +134,5 @@ function checkTimestamp(action, clientTimestamp) {
         data[action] = serverTimestamp;
     }
 
-    return data[action] !== serverTimestamp;
+    return data[action] != serverTimestamp;
 }
