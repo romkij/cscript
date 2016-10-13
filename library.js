@@ -143,13 +143,13 @@ function checkTimestamp(action, clientTimestamp) {
         // data = newData;
         result = true;
     }
-
-    server.UpdateUserInternalData({
-        PlayFabId: currentPlayerId,
-        Data: {
-            "Security": JSON.stringify(data)
-        }
-    });
+    //
+    // server.UpdateUserInternalData({
+    //     PlayFabId: currentPlayerId,
+    //     Data: {
+    //         "Security": JSON.stringify(data)
+    //     }
+    // });
 
     return result;
 }
