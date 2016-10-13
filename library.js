@@ -102,6 +102,7 @@ function checkTimestamp(action, clientTimestamp) {
         if (data.hasOwnProperty(action)) {
             var serverTimestamp = parseInt(data[action]);
 
+            log.debug(serverTimestamp);
             if (parseInt(clientTimestamp) > serverTimestamp) {
                 data[action] = clientTimestamp;
             }
