@@ -34,7 +34,6 @@ handlers.grantUserItems = function(args) {
     if (!isValid("grantUserItems", args)) {
         return getHashedResult();
     }
-
     var data = JSON.parse(args.Data.Payload);
 
 	var result = server.GrantItemsToUser({
