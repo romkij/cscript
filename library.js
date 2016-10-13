@@ -130,7 +130,7 @@ function checkTimestamp(action, clientTimestamp) {
         data = {
             action: 12
         };
-        log.debug(action);
+        log.debug(data);
 
         data.action = clientTimestamp;
 
