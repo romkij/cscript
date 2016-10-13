@@ -119,7 +119,7 @@ function checkTimestamp(action, clientTimestamp) {
             if (result = (parseInt(clientTimestamp) > serverTimestamp)) {
                 data[action] = clientTimestamp;
             } else {
-                data[action] = serverTimestamp;
+                data[action] = currentTimeInSeconds();
             }
         }
         else {
