@@ -151,9 +151,7 @@ handlers.processDaily = function (args) {
         DeadlineTimestamp: userServerData.DeadlineTimestamp,
         IsNeedReward: false,
         RewardedItems: rewardItems,
-        RealDate: realDate,
-        IsCheater: userClientData.IsCheater
-
+        RealDate: realDate
     };
 
     server.UpdateUserInternalData({
