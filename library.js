@@ -91,7 +91,7 @@ function getHashedResult(data) {
         Timestamp: currentTimeInSeconds()
     };
     return {
-        Data: JSON.stringify(preparedData),
+        Data: preparedData,
         Hash: getHash(preparedData)
     };
 }
