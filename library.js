@@ -98,7 +98,7 @@ function getHashedResult(data) {
         }
     };
 
-    result.Hash = getHash(result.data);
+    result.Hash = getHash(result.Data);
 
     return result;
 }
