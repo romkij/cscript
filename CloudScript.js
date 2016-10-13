@@ -30,14 +30,6 @@ handlers.newUserAction = function (args) {
     }
 };
 
-handlers.test = function (args) {
-    if (isValid("test", args)) {
-        return getHashedResult("valid");
-    } else {
-        return getHashedResult("spoofing");
-    }
-};
-
 handlers.grantUserItems = function(args) {
     if (!isValid("grantUserItems", args)) {
         return getHashedResult();

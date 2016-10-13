@@ -1,8 +1,4 @@
-/**
- * Created by Romkij on 10/11/2016.
- */
 
-// Additional functionality.
 function currentTimeInSeconds() {
     var now = new Date();
     return Math.floor(now.getTime() / 1000);
@@ -96,7 +92,6 @@ function getHashedResult(data) {
 }
 
 function checkTimestamp(action, clientTimestamp) {
-
     var serverTimestamp = 0;
     var SECURITY_KEY = "Security";
 
@@ -110,23 +105,19 @@ function checkTimestamp(action, clientTimestamp) {
         if (data.hasOwnProperty(action)) {
             serverTimestamp = parseInt(data[action]);
             clientTimestamp = parseInt(clientTimestamp);
-            log.debug({
-                server: serverTimestamp,
-                client: clientTimestamp
-            });
         }
     } else {
         data = {};
     }
 
     //
-    log.debug({
-        serverTimestamp: serverTimestamp,
-        clientTimestamp: clientTimestamp
-    });
+    // log.debug({
+    //     serverTimestamp: serverTimestamp,
+    //     clientTimestamp: clientTimestamp
+    // });
 
     if (clientTimestamp > serverTimestamp) {
-        log.debug("Is valid");
+        // log.debug("Is valid");
         data[action] = clientTimestamp;
         server.UpdateUserInternalData({
             PlayFabId: currentPlayerId,
@@ -136,7 +127,7 @@ function checkTimestamp(action, clientTimestamp) {
         });
     } else {
         data[action] = serverTimestamp;
-        log.debug('Is not valid');
+        // log.debug('Is not valid');
     }
 
     return data[action] != serverTimestamp;
