@@ -96,28 +96,27 @@ function checkTimestamp(action, clientTimestamp) {
         Keys: ["Security"]
     });
 
+    var result = false;
+
     if (data.Data.hasOwnProperty(SECURITY_KEY)) {
         data = JSON.parse(data.Data[SECURITY_KEY].Value);
 
         if (data.hasOwnProperty(action)) {
             var serverTimestamp = parseInt(data[action]);
 
-            if (parseInt(clientTimestamp) > serverTimestamp) {
-                log.debug({
-                    server: serverTimestamp,
-                    client: clientTimestamp
-                });
-
+            if (result = (parseInt(clientTimestamp) > serverTimestamp)) {
                 data[action] = clientTimestamp;
             }
         }
         else {
             data[action] = clientTimestamp;
+            result = true;
         }
     }
     else {
         var newData = {};
         newData[action] = clientTimestamp;
+        result = true;
     }
 
     server.UpdateUserInternalData({
@@ -127,5 +126,5 @@ function checkTimestamp(action, clientTimestamp) {
         }
     });
 
-    return data[action] == clientTimestamp;
+    return result;
 }
