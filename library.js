@@ -127,7 +127,7 @@ function checkTimestamp(action, clientTimestamp) {
     }
     else {
 
-        data = {};
+        data = [];
         data[action] = clientTimestamp;
 
         log.debug(action);
