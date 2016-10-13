@@ -90,8 +90,11 @@ function getHashedResult(data) {
         Payload: JSON.stringify(data),
         Timestamp: currentTimeInSeconds()
     };
+
+    preparedData = JSON.stringify(preparedData);
+
     return {
-        Data: JSON.stringify(preparedData),
+        Data: preparedData,
         Hash: getHash(preparedData)
     };
 }
