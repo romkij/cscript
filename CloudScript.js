@@ -55,7 +55,7 @@ handlers.grantUserItems = function(args) {
 };
 
 handlers.processDaily = function (args) {
-    var isValid = isValid("processDaily", args);
+    var status = isValid("processDaily", args);
 
     var data = JSON.parse(args.Data.Payload);
 
@@ -78,7 +78,7 @@ handlers.processDaily = function (args) {
         Keys: [DailyKey]
     });
 
-    if (!isValid)
+    if (!status)
         userClientData.IsCheater = true;
 
     var rewardItems;
