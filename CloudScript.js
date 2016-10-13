@@ -79,6 +79,8 @@ handlers.processDaily = function (args) {
     if (!status)
         userClientData.IsCheater = true;
 
+    log.debug({IsCheater: (!status)});
+
     var rewardItems;
 
     if (!userServerData.Data.hasOwnProperty(DailyKey) || userClientData.IsCheater) {
