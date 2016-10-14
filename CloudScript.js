@@ -198,7 +198,7 @@ handlers.updateStatistics = function (args) {
     var data = JSON.parse(args.Data.Payload);
     var result = server.UpdatePlayerStatistics({
         PlayFabId: currentPlayerId,
-        Statistics: data
+        Statistics: data.Statistics
     });
     return getHashedResult(result);
 };
