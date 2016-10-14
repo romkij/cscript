@@ -157,3 +157,50 @@ handlers.processDaily = function (args) {
 
     return getHashedResult(result);
 };
+
+handlers.substractCurrency = function (args) {
+    if (!isValid("substractCurrency", args)) {
+        return getHashedResult();
+    }
+
+    var data = JSON.parse(args.Data.Payload);
+
+    var result = server.SubtractUserVirtualCurrency({
+        PlayFabId: currentPlayerId,
+        VirtualCurrency: data.VirtualCurrency,
+        Amount: data.Amount
+    });
+
+    return getHashedResult(result);
+};
+
+handlers.addCurrency = function (args) {
+    if (!isValid("addCurrency", args)) {
+        return getHashedResult();
+    }
+
+    var data = JSON.parse(args.Data.Payload);
+
+    var result = server.AddUserVirtualCurrency({
+        PlayFabId: currentPlayerId,
+        VirtualCurrency: data.VirtualCurrency,
+        Amount: data.Amount
+    });
+
+    return getHashedResult(result);
+};
+
+handlers.updateStatistics = function (args) {
+    if (!isValid("statistics", args)) {
+        return getHashedResult();
+    }
+
+    var data = JSON.parse(args.Data.Payload);
+
+    var result = server.UpdatePlayerStatistics({
+        PlayFabId: currentPlayerId,
+        Statistics: data
+    });
+
+    return getHashedResult(result);
+};
