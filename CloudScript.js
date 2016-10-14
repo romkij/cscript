@@ -200,6 +200,5 @@ handlers.updateStatistics = function (args) {
         PlayFabId: currentPlayerId,
         Statistics: data
     });
-
     return getHashedResult(result);
 };
