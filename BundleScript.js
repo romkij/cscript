@@ -55,7 +55,7 @@ handlers.getManifest = function (args) {
             return getHashedResult(JSON.parse(request));
         }
         else {
-            return null;
+            return getHashedResult(null);
         }
     }
 };
