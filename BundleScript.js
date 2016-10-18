@@ -3,10 +3,16 @@
  */
 
 handlers.getManifest = function (args) {
+    if (!isValid("getManifest", args)) {
+        return getHashedResult();
+    }
+
+    var data = JSON.parse(args.Data.Payload);
+
     var key = "AssetBundles";
-    var clientVersion = args.ClientVersion;
-    var isDebug = args.IsDebug;
-    var platform = args.Platform;
+    var clientVersion = data.ClientVersion;
+    var isDebug = data.IsDebug;
+    var platform = data.Platform;
 
     var internalData = server.GetTitleInternalData({
         Keys: [key]
@@ -46,7 +52,7 @@ handlers.getManifest = function (args) {
             }).URL;
 
             var request = http.request(url, "get", "", "application/json");
-            return JSON.parse(request);
+            return getHashedResult(JSON.parse(request));
         }
         else {
             return null;
