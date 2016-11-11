@@ -13,6 +13,7 @@ handlers.getManifest = function (args) {
     var clientVersion = data.ClientVersion;
     var isDebug = data.IsDebug;
     var platform = data.Platform;
+    var subTarget = data.SubTarget;
 
     var internalData = server.GetTitleInternalData({
         Keys: [key]
@@ -23,7 +24,7 @@ handlers.getManifest = function (args) {
         var currentTimestamp = currentTimeInSeconds();
 
         var manifests = internalData.Manifests.filter(function (manifest) {
-            if (manifest.Platform != platform)
+            if (manifest.Platform != platform && manifest.SubTarget != subTarget)
                 return false;
 
             if (isDebug) {
