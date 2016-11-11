@@ -15,6 +15,8 @@ handlers.getManifest = function (args) {
     var platform = data.Platform;
     var subTarget = data.SubTarget;
 
+    log.debug(subTarget);
+
     var internalData = server.GetTitleInternalData({
         Keys: [key]
     });
@@ -48,6 +50,7 @@ handlers.getManifest = function (args) {
         if (manifests.length > 0) {
             var manifest = manifests[manifests.length - 1];
             var manifestKey = internalData.TemplatePath.replace('%client_version%', clientVersion).replace('%platform%', platform).replace('%revision%', manifest.Revision).replace('%subtarget%', subTarget);
+            log.debug(manifestKey);
 
             var url = server.GetContentDownloadUrl({
                 Key: manifestKey,
