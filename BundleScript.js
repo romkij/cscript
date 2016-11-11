@@ -13,9 +13,7 @@ handlers.getManifest = function (args) {
     var clientVersion = data.ClientVersion;
     var isDebug = data.IsDebug;
     var platform = data.Platform;
-    // var subTarget = data.SubTarget;
-
-    // log.debug(subTarget);
+    var subTarget = data.SubTarget;
 
     var internalData = server.GetTitleInternalData({
         Keys: [key]
@@ -26,7 +24,9 @@ handlers.getManifest = function (args) {
         var currentTimestamp = currentTimeInSeconds();
 
         var manifests = internalData.Manifests.filter(function (manifest) {
-            if (manifest.Platform != platform && manifest.SubTarget != subTarget)
+            if (manifest.Platform != platform)
+                return false;
+            if (manifest.SubTarget != subTarget)
                 return false;
 
             if (isDebug) {
@@ -47,7 +47,7 @@ handlers.getManifest = function (args) {
 
         if (manifests.length > 0) {
             var manifest = manifests[manifests.length - 1];
-            var manifestKey = internalData.TemplatePath.replace('%client_version%', clientVersion).replace('%platform%', platform).replace('%revision%', manifest.Revision).replace('%subtarget%', manifest.SubTarget);
+            var manifestKey = internalData.TemplatePath.replace('%client_version%', clientVersion).replace('%platform%', platform).replace('%revision%', manifest.Revision).replace('%subtarget%', subTarget);
 
             var url = server.GetContentDownloadUrl({
                 Key: manifestKey,
