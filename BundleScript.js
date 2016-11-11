@@ -15,6 +15,8 @@ handlers.getManifest = function (args) {
     var platform = data.Platform;
     var subTarget = data.SubTarget;
 
+    log.debug(subTarget);
+
     var internalData = server.GetTitleInternalData({
         Keys: [key]
     });
